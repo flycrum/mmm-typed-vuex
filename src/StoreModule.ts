@@ -23,7 +23,7 @@ export class StoreModule implements StoreModuleI {
   }
 
   // dynamically generated state with module reference
-  protected _generateState(): any {
+  protected _generateState(): {module: StoreModuleI} {
     return {
       module: this,
     };
