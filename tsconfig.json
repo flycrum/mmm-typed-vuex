@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "stripInternal": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": false,
+    "lib": ["es2015", "dom"],
+    "target": "es5",
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "pretty": true,
+    "watch": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "node_modules",
+    "typings",
+    "typings/index.d.ts"
+  ]
+}
