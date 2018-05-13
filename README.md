@@ -6,6 +6,16 @@ We're talking:
 * no more guess work as to the structure of the store
 * typed state values, mutation payloads, and more!
 
+## Installation
+
+```bash
+$ yarn add mmm-typed-vuex
+```
+
+```bash
+$ npm install --save-dev mmm-typed-vuex
+```
+
 ### Why?
 
 I could not be more sick of brittle string references! 
