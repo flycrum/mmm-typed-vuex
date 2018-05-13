@@ -1,2 +1,2 @@
-export { StoreModule } from './Store.module';
-export { StoreModuleI } from './Store.module';
+export { StoreModule } from './StoreModule';
+export { StoreModuleI } from './StoreModule';

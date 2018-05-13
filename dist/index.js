@@ -1,4 +1,4 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Store_module_1 = require("./Store.module");
-exports.StoreModule = Store_module_1.StoreModule;
+var StoreModule_1 = require("./StoreModule");
+exports.StoreModule = StoreModule_1.StoreModule;
