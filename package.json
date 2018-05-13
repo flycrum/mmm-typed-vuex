@@ -1,0 +1,31 @@
+{
+  "name": "mmm-typed-vuex",
+  "version": "0.0.1",
+  "description": "Vuex and TypeScript living in harmony with one another.",
+  "author": "crummm",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "prerelease": "yarn test && yarn build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crummm/mmm-typed-vuex.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "vue",
+    "vuex",
+    "typescript",
+    "store"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "jest": "^22.4.3",
+    "reflect-metadata": "^0.1.12",
+    "ts-jest": "^22.4.6",
+    "typescript": "2.8.3"
+  }
+}
