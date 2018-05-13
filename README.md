@@ -1,5 +1,5 @@
-# mmm-typed-vuex
-Vuex and TypeScript living in harmony with one another. 
+# mmm-typed-vuex (beta)
+Vuex and TypeScript living in harmony with one another.
 
 We're talking:
 * no more string references in your components
@@ -13,7 +13,7 @@ $ yarn add mmm-typed-vuex
 ```
 
 ```bash
-$ npm install --save-dev mmm-typed-vuex
+$ npm install --save mmm-typed-vuex
 ```
 
 ### Why?
