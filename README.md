@@ -51,6 +51,14 @@ Adding insult to injury, you sure as heck aren't getting typed state, mutation p
 
 ### Solution
 
+Let the store, alone, define and strictly enforce (through typings):
+* module namespaces / paths
+* nested modules and their corresponding parts
+* state property names and types
+* available mutations, actions, and getters
+* mutuation and action payload types
+* getter return types (a work in progress)
+
 Enough talk, let me instead show you one possible alternative to the aforementioned string hell:
 
 ```typescript
@@ -160,7 +168,7 @@ export class CounterStoreModule extends StoreModule {
 }
 ```
 
-### Gotchas
+### Caveats
 
 There's more boilerplate. It sucks, but that's just the reality of it right now.
 On the flip-side, however, is the fact that once you write a vuex module, the rest of the app
@@ -168,6 +176,12 @@ can effortlessly use it. No more banging your head against the wall trying to fi
 a reference or refactor some part of it. Is it worth the extra initial setup? That's for you
 to decide. For me, the answer is a resounding, "YES!". Once I'm done writing a store and
 am back to building out components, the last thing I want to do is needlessly wrestle with the store.
+
+### Other ideas
+
+This is surely not the best way this can be done, but it's at least a step in the right direction, I feel.
+
+If you have ideas on how to improve upon this effort or want to contribute in any way, I'd definitely enjoy hearing from you! Two people's ideas are better than one.
 
 ### Conclusion
 

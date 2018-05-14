@@ -1,11 +1,12 @@
 {
   "name": "mmm-typed-vuex",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Vuex and TypeScript living in harmony with one another.",
   "author": "crummm",
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "prerelease": "yarn test && yarn build",
+    "publish": "npm publish",
     "test": "jest"
   },
   "repository": {
@@ -17,8 +18,9 @@
   "keywords": [
     "vue",
     "vuex",
+    "store",
     "typescript",
-    "store"
+    "javascript"
   ],
   "license": "MIT",
   "devDependencies": {
