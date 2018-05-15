@@ -99,17 +99,22 @@ methods: {
 },
 ```
 
-Much better! It may appear a little verbose, but it's all typed and your editor's intelli-sense should be able to do all the heavy lifting. Oh...and no string references!!
+Much better! It may appear a little verbose, but it's all typed and your editor's intelli-sense should be able to do all the heavy lifting. Oh...and no more string references!!
 
-### Okay, but what is mmm-typed-vuex?
+### Okay, but what is mmm-typed-vuex really?
 
-Honestly, it's not much. We're talking about roughly 10 lines of real code...but it did take some thought to pull off and there's some magic happening in there.
+Honestly, it's not much...which was my main objective. We're talking about roughly 10 lines of real code...but there is a dash of magic in there.
+It's just enough to determine module paths internally (so you don't have to) and make a module's convenience methods more accessible.
 
 And now, for the measly sum of $0, all that magic can be yours ;)
 
 ### Vuex definition exmaples:
 
-Before you commit to anything, no pun intended, please take a quick gander at how the definition of a Vuex store might look:
+Before you commit to anything, no pun intended, please take a quick gander at how the definition of a Vuex store might look.
+
+A quick note, this library attempts to be unopinionated by not recreating or wrapping any Vuex logic. 
+This leaves the details of store implementation and Vue component consumption up to you.
+The following is simply my best stab at it. Chances are, you'll find a better way to leverage this simple library :)
 
 ```typescript
 // RootStore.module.ts (with a sub-module defined)
