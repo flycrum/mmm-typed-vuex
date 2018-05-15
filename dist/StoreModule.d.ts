@@ -16,6 +16,8 @@ export declare class StoreModule implements StoreModuleI {
     protected _moduleNamespace: string;
     protected _parentModule: StoreModule;
     protected _mixinOptions(options: StoreModuleI): void;
-    protected _generateState(): any;
+    protected _generateState(): {
+        module: StoreModuleI;
+    };
     protected _getModulePath(module: StoreModule, path?: string): string;
 }

@@ -24,24 +24,36 @@ Yeah, we all know we shouldn't do it, but Vuex makes it especially tempting.
 Be honest, have you ever done something like this?
 
 ```typescript
+// App.vue
 computed: {
-  ...mapState('some/nested/module', {
-    a: state => state.a,
-    b: state => state.b
-  })
+  ...mapState({
+    title: 'title',
+    count(state) { return state.CounterStore.count; },
+  }),
+  ...mapGetters('CounterStore', [
+    'countX10',
+  ]),
 },
 methods: {
-  ...mapActions('some/nested/module', [
-    'foo',
-    'bar'
-  ])
-}
+  ...mapMutations('CounterStore', {
+    incrementMutation(commit): void {
+      commit('increment', 3);
+    },
+  }),
+  ...mapActions({
+    decrementAction(dispatch): void {
+      dispatch('CounterStore/decrement', 3);
+    },
+  }),
+},
 ```
 
 If so, you now have:
-* static string references to a potentially, complex store structure
+* static string references to a potentially complex and ever-changing store structure
 * blind references to state properties
 * very brittle code
+
+Disgusting. Definitely not very 'mmm' ;) 
 
 What if one of your property or mutuation names change? What if you move, rename, or delete a module? 
 Yep, you're going to have to remember to update all those narly string references throughout your app.
@@ -62,24 +74,29 @@ Let the store, alone, define and strictly enforce (through typings):
 Enough talk, let me instead show you one possible alternative to the aforementioned string hell:
 
 ```typescript
+// App.vue
 computed: {
   ...mapState({
+    title(state: RootStoreModule) { return state.title; },
     count(state: RootStoreModule) { return state.CounterStore.count; },
   }),
   countX10Increment(): number { return this.$store.state.CounterStore.module.getCountX10(this); },
 },
 methods: {
   ...mapMutations({
-    increment(commit, payload): void {
+    incrementMutation(commit, payload): void {
+      const state: RootStoreModule = this.$store.state;
       // convenience method that handles the module path and type-safes the mutation payload
-      commit(...this.$store.state.CounterStore.module.commitIncrement(1));
+      commit(...state.CounterStore.module.commitIncrement(2));
     },
   }),
   ...mapActions({
-    incrementAction(dispatch, payload): void {
-      dispatch(...this.$store.state.CounterStore.module.dispatchIncrement(2));
+    decrementAction(dispatch, payload): void {
+      const state: RootStoreModule = this.$store.state;
+      dispatch(...state.CounterStore.module.dispatchDecrement(2));
     },
   }),
+},
 ```
 
 Much better! It may appear a little verbose, but it's all typed and your editor's intelli-sense should be able to do all the heavy lifting.
@@ -95,17 +112,23 @@ And now, for the measly sum of $0, all that magic can be yours ;)
 Before you commit to anything, no pun intended, please take a quick gander at how the definition of a Vuex store might look:
 
 ```typescript
-// the root store with a module setup
-export class RootStoreModule extends StoreModule {
+// RootStore.module.ts (with a sub-module defined)
+export default class RootStoreModule extends StoreModule {
+  public title: string;
+  public module: RootStoreModule;
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);
 
   constructor() {
     super();
 
+    // don't define a name for root because it's technically not a module nor does it have a namespace
     this._moduleNamespace = '';
 
     this._mixinOptions(
       {
+        state: Object.assign(this._generateState(), {
+          title: 'Module Example',
+        }),
         modules: {
           CounterStore: this.CounterStore,
         },
@@ -116,20 +139,17 @@ export class RootStoreModule extends StoreModule {
 ```
 
 ```typescript
-// a module definition
-export class CounterStoreModule extends StoreModule {
-  // did I mention that I hate strings and static declarations? that's why these guys are here.
+// CounterStore.module.ts
+export default class CounterStoreModule extends StoreModule {
   public static readonly INCREMENT: string = 'increment';
+  public static readonly DECREMENT: string = 'decrement';
   public static readonly COUNTX10: string = 'countX10';
 
-  // state property typings
-  // these are not used to set or get values...only for typings
   public count: number;
   public module: CounterStoreModule;
 
-  // typed mutations commits, actions dispatches, and getter accessors
+  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this._getModulePath(this, CounterStoreModule.DECREMENT), payload, options]; }
   public commitIncrement(payload: number, options?: CommitOptions) { return [this._getModulePath(this, CounterStoreModule.INCREMENT), payload, options]; }
-  public dispatchIncrement(payload: number, options?: DispatchOptions) { return [this._getModulePath(this, CounterStoreModule.INCREMENT), payload, options]; }
   public getCountX10(comp: any): number { return comp.$store.getters[this._getModulePath(this, CounterStoreModule.COUNTX10)]; }
 
   constructor(parentModule: StoreModule) {
@@ -145,13 +165,16 @@ export class CounterStoreModule extends StoreModule {
           count: 0,
         }),
         mutations: {
+          [CounterStoreModule.DECREMENT](state: CounterStoreModule, payload: number) {
+            state.count -= payload;
+          },
           [CounterStoreModule.INCREMENT](state: CounterStoreModule, payload: number) {
             state.count += payload;
           },
         },
         actions: {
-          [CounterStoreModule.INCREMENT](context: ActionContext<any, any>, payload: number) {
-            context.commit(CounterStoreModule.INCREMENT, payload);
+          [CounterStoreModule.DECREMENT](context: ActionContext<any, any>, payload: number) {
+            context.commit(CounterStoreModule.DECREMENT, payload);
           },
         },
         getters: {
@@ -159,14 +182,23 @@ export class CounterStoreModule extends StoreModule {
             return state.count * 10;
           },
         },
-        modules: {
-          CounterStoreNested: this.CounterStoreNested,
-        },
       },
     );
   }
 }
 ```
+
+### Additional Notes
+
+* The properties like ```public title: string;``` defined in RootStore.module.ts is 100% for typing and never used to get or set state values.
+* For reasons I won't go into a deep-dive here, ```public CounterStore: CounterStoreModule = new CounterStoreModule(this);``` is an exception to this.
+* Methods for mutations, actions, etc are not intended to actually execute those commands but rather type-safe payloads and auto-magically determine module paths.
+
+### Examples
+
+1. A baseline, no typings example that showcases the brittleness of the string-heavy approach (example: [module-example-no-types](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/module-example-no-types)).
+2. A simple, one-level deep 'root' state example  (example: [root-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/root-example)).
+3. A slightly more complex, two-level deep 'module' example  (example: [module-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/module-example)).
 
 ### Caveats
 
