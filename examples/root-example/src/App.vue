@@ -2,7 +2,7 @@
   <div id="app">
     <button @click="decrementAction">-1 (action)</button>
     counter: {{ count }}
-    <button @click="onClickIncrement">+1 (mutation)</button>
+    <button @click="incrementMutation">+1 (mutation)</button>
     <p>
       counter (x10): {{ countX10Increment }}
     </p>
@@ -24,7 +24,7 @@
     },
     methods: {
       ...mapMutations({
-        increment(commit, payload): void {
+        incrementMutation(commit, payload): void {
           // @ts-ignore
           const state: RootStoreModule = this.$store.state;
           // convenience method that handles the module path and type-safes the mutation payload
@@ -41,14 +41,6 @@
           dispatch(...state.module.dispatchDecrement(1));
         },
       }),
-      onClickIncrement(): void {
-        // @ts-ignore
-        this.increment();
-      },
-      onClickIncrementAction(): void {
-        // @ts-ignore
-        this.decrementAction();
-      },
     },
   });
 </script>
