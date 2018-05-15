@@ -201,9 +201,9 @@ export default class CounterStoreModule extends StoreModule {
 
 ### Examples
 
-1. A baseline, no typings example that showcases the brittleness of the string-heavy approach (example: [module-example-no-types](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/module-example-no-types)).
+1. A baseline, no typings example that showcases the brittleness of the string-heavy approach (example: [module-example-no-types](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-example-no-typings)).
 2. A simple, one-level deep 'root' state example  (example: [root-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/root-example)).
-3. A slightly more complex, two-level deep 'module' example  (example: [module-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/module-example)).
+3. A slightly more complex, two-level deep 'module' example  (example: [module-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-example)).
 
 ### Caveats
 
