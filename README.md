@@ -110,9 +110,7 @@ And now, for the measly sum of $0, all that magic can be yours ;)
 
 ### Vuex definition exmaples:
 
-Before you commit to anything, no pun intended, please take a quick gander at how the definition of a Vuex store might look.
-
-A quick note, this library attempts to be unopinionated by not recreating or wrapping any Vuex logic. 
+A quick note, this library attempts to be largely unopinionated by not recreating or wrapping any Vuex logic. 
 This leaves the details of store implementation and Vue component consumption up to you.
 The following is simply my best stab at it. Chances are, you'll find a better way to leverage this simple library :)
 
