@@ -99,7 +99,7 @@ methods: {
 },
 ```
 
-Much better! It may appear a little verbose, but it's all typed and your editor's intelli-sense should be able to do all the heavy lifting.
+Much better! It may appear a little verbose, but it's all typed and your editor's intelli-sense should be able to do all the heavy lifting. Oh...and no string references!!
 
 ### Okay, but what is mmm-typed-vuex?
 
