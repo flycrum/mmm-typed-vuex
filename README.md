@@ -108,7 +108,7 @@ It's just enough to determine module paths internally (so you don't have to) and
 
 And now, for the measly sum of $0, all that magic can be yours ;)
 
-### Vuex definition exmaples:
+### Vuex definition examples:
 
 A quick note, this library attempts to be largely unopinionated by not recreating or wrapping any Vuex logic. 
 This leaves the details of store implementation and Vue component consumption up to you.
