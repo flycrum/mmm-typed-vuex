@@ -23,7 +23,7 @@
       }),
       ...mapGetters('CounterStore', [
         'countX10',
-      ])
+      ]),
     },
     methods: {
       ...mapMutations('CounterStore', {
