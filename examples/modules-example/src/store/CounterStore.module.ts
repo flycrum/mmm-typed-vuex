@@ -23,6 +23,7 @@ export default class CounterStoreModule extends StoreModule {
     this._parentModule = parentModule;
 
     this._mixinOptions(
+      // this should be familiar to you...it's exactly what you've already been doing (no magic here)
       {
         namespaced: true,
         state: Object.assign(this._generateState(), {

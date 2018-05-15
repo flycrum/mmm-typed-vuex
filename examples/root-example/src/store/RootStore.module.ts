@@ -23,6 +23,7 @@ export default class RootStoreModule extends StoreModule {
     this._moduleNamespace = '';
 
     this._mixinOptions(
+      // this should be familiar to you...it's exactly what you've already been doing (no magic here)
       {
         state: Object.assign(this._generateState(), {
           count: 0,
