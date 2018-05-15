@@ -2,9 +2,9 @@
 Vuex and TypeScript living in harmony with one another.
 
 We're talking:
-* no more string references in your components
+* no more string references in your Vue components
 * no more guess work as to the structure of the store
-* typed state values, mutation payloads, and more!
+* typed state values, mutation / action payloads, and more!
 
 ## Installation
 
@@ -65,7 +65,7 @@ Adding insult to injury, you sure as heck aren't getting typed state, mutation p
 
 Let the store, alone, define and strictly enforce (through typings):
 * module namespaces / paths
-* nested modules and their corresponding parts
+* nested modules and their corresponding paths
 * state property names and types
 * available mutations, actions, and getters
 * mutuation and action payload types
