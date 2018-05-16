@@ -3,7 +3,7 @@ Vuex and TypeScript living in harmony with one another.
 
 We're talking:
 * no more string references in your Vue components
-* no more guess work as to the structure of the store
+* no more guess work as to the structure of your store
 * typed state values, mutation / action payloads, and more!
 
 ## Installation
@@ -56,16 +56,15 @@ If so, you now have:
 Disgusting. Definitely not very 'mmm' ;) 
 
 What if one of your property or mutuation names change? What if you move, rename, or delete a module? 
-Yep, you're going to have to remember to update all those narly string references throughout your app.
+Yep, you're going to have to remember to find and update all those narly string references throughout your app.
 Good luck if you're playing around with a substantial codebase.
 
 Adding insult to injury, you sure as heck aren't getting typed state, mutation payloads, etc. Ouch!
 
 ### Solution
 
-Let the store, alone, define and strictly enforce (through typings):
-* module namespaces / paths
-* nested modules and their corresponding paths
+Let the store, alone, define and strictly enforce the following (through typings):
+* module and nested module namespaces / paths
 * state property names and types
 * available mutations, actions, and getters
 * mutuation and action payload types
@@ -106,7 +105,7 @@ Much better! It may appear a little verbose, but it's all typed and your editor'
 Honestly, it's not much...which was my main objective. We're talking about roughly 10 lines of real code...but there is a dash of magic in there.
 It's just enough to determine module paths internally (so you don't have to) and make a module's convenience methods more accessible.
 
-And now, for the measly sum of $0, all that magic can be yours ;)
+And now, for the measly sum of __$0__, all that magic can be yours ;)
 
 ### Vuex definition examples:
 
@@ -117,8 +116,10 @@ The following is simply my best stab at it. Chances are, you'll find a better wa
 ```typescript
 // RootStore.module.ts (with a sub-module defined)
 export default class RootStoreModule extends StoreModule {
+  // state property typings (these are not used to get or set values...only for typings)
   public title: string;
   public module: RootStoreModule;
+  // sub-modules (these are used to init the modules...as well for typings)
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);
 
   constructor() {
@@ -128,7 +129,7 @@ export default class RootStoreModule extends StoreModule {
     this._moduleNamespace = '';
 
     this._mixinOptions(
-      // this should be familiar to you...it's exactly what you've already been doing (no magic here)
+      // this object structure should be familiar to you...it's exactly what you've already been doing (except for Object.assign...)
       {
         state: Object.assign(this._generateState(), {
           title: 'Module Example',
@@ -163,7 +164,7 @@ export default class CounterStoreModule extends StoreModule {
     this._parentModule = parentModule;
 
     this._mixinOptions(
-      // this should be familiar to you...it's exactly what you've already been doing (no magic here)
+      // this object structure should be familiar to you...it's what you've already been doing
       {
         namespaced: true,
         state: Object.assign(this._generateState(), {
@@ -195,8 +196,8 @@ export default class CounterStoreModule extends StoreModule {
 
 ### Additional Notes
 
-* The properties like ```public title: string;``` defined in RootStore.module.ts is 100% for typing and never used to get or set state values.
-* For reasons I won't go into a deep-dive here, ```public CounterStore: CounterStoreModule = new CounterStoreModule(this);``` is an exception to this.
+* Those class properties (e.g. ```public title: string;```) found within RootStore.module.ts are *not* an anyway used to get or set state values (only for typings).
+* For reasons I won't go into here, ```public CounterStore: CounterStoreModule = new CounterStoreModule(this);``` is an exception to what I mentioned above.
 * Methods for mutations, actions, etc are not intended to actually execute those commands but rather type-safe payloads and auto-magically determine module paths.
 
 ### Examples
@@ -205,14 +206,20 @@ export default class CounterStoreModule extends StoreModule {
 2. A slightly more complex, two-level deep 'module' example: [modules-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-example)
 3. A simple, one-level deep 'root' state example: [root-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/root-example)
 
-### Caveats
+### Potential negatives
 
 There's more boilerplate. It sucks, but that's just the reality of it right now.
+
+You're now storing a reference to your modules in the store, itself (behind the scenes as part of the 'magic'). 
+This is less than ideal and I'm exploring a number of alternative options.
+
+### Rebuttal
+
 On the flip-side, however, is the fact that once you write a vuex module, the rest of the app
 can effortlessly use it. No more banging your head against the wall trying to figure out
-a reference or refactor some part of it. Is it worth the extra initial setup? That's for you
+the store structure or refactor some part of it. Is it worth the extra initial setup? That's for you
 to decide. For me, the answer is a resounding, "YES!". Once I'm done writing a store and
-am back to building out components, the last thing I want to do is needlessly wrestle with the store.
+am back to building out components and services, the last thing I want to do is needlessly wrestle with the store.
 
 ### Other ideas
 
