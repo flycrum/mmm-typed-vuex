@@ -18,7 +18,7 @@
     name: 'app',
     computed: {
       ...mapState({
-        count(state: RootStoreModule) { return state.count; },
+        count(state: RootStoreModule): number { return state.count; },
       }),
       countX10Increment(): number { return this.$store.state.module.getCountX10(this); },
     },
