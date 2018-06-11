@@ -26,7 +26,7 @@ export default class RootStoreModule extends StoreModule {
     // store this instance as the global static helper instance
     RootStoreModule.helpers = this;
     // don't define a name for root because it's technically not a module nor does it have a namespace
-    this._moduleNamespace = '';
+    this.moduleNamespace = '';
 
     this.setOptions(
       // this should be familiar...it's exactly what you've already been doing (no magic here)

@@ -3,13 +3,13 @@ export default class StoreModule {
   public static rootStore: any;
 
   // PROPERTIES
+  public moduleNamespace: string;
+  public parentModule: StoreModule;
   public store: any;
   public state: any;
 
   // VARIABLES
-  protected _moduleNamespace: string;
   protected _modulePathCacheMap: {[path: string]: string};
-  protected _parentModule: StoreModule;
 
   // CONSTRUCTOR
   constructor() {
@@ -53,8 +53,8 @@ export default class StoreModule {
   protected _processModulePath(module: StoreModule, path?: string): string {
     path = path || '';
     // prepend this module's name (if one is given)
-    path = (module._moduleNamespace ? module._moduleNamespace + '/' : module._moduleNamespace || '') + path;
+    path = (module.moduleNamespace ? module.moduleNamespace + '/' : module.moduleNamespace || '') + path;
     // recursively get ancestor's paths
-    return module._parentModule ? this._processModulePath(module._parentModule, path) : path;
+    return module.parentModule ? this._processModulePath(module.parentModule, path) : path;
   }
 }

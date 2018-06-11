@@ -34,9 +34,9 @@ var StoreModule = /** @class */ (function () {
     StoreModule.prototype._processModulePath = function (module, path) {
         path = path || '';
         // prepend this module's name (if one is given)
-        path = (module._moduleNamespace ? module._moduleNamespace + '/' : module._moduleNamespace || '') + path;
+        path = (module.moduleNamespace ? module.moduleNamespace + '/' : module.moduleNamespace || '') + path;
         // recursively get ancestor's paths
-        return module._parentModule ? this._processModulePath(module._parentModule, path) : path;
+        return module.parentModule ? this._processModulePath(module.parentModule, path) : path;
     };
     return StoreModule;
 }());

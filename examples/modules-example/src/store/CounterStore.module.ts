@@ -18,8 +18,8 @@ export default class CounterStoreModule extends StoreModule {
   constructor(parentModule: StoreModule) {
     super();
 
-    this._moduleNamespace = 'CounterStore';
-    this._parentModule = parentModule;
+    this.moduleNamespace = 'CounterStore';
+    this.parentModule = parentModule;
 
     this.setOptions(
       // this should be familiar...it's exactly what you've already been doing (no magic here)
