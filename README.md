@@ -5,6 +5,8 @@ We're talking:
 * no more string references in your Vue components
 * no more guess work as to the structure of your store
 * typed state values, mutation / action payloads, and more!
+* simplify even further by getting rid of mapState, mapActions, mapMutations, and mapGetters
+* get state, dispatch actions, etc from anywhere in your code via a single-line command!
 
 ## Installation
 
@@ -68,33 +70,31 @@ Let the store, alone, define and strictly enforce the following (through typings
 * state property names and types
 * available mutations, actions, and getters
 * mutuation and action payload types
-* getter return types (a work in progress)
+* getter return types
 
 Enough talk, let me instead show you one possible alternative to the aforementioned string hell:
 
 ```typescript
 // App.vue
 computed: {
+  // use map state
   ...mapState({
     title(state: RootStoreModule): string { return state.title; },
-    count(state: RootStoreModule): number { return state.CounterStore.count; },
   }),
-  countX10Increment(): number { return this.$store.state.CounterStore.module.getCountX10(this); },
+  // or bypass mapState and access through our helper
+  count(state: RootStoreModule): number { return RootStoreModule.helpers.state.CounterStore.count; },
+  // getters
+  titleWithCaps(): string { return RootStoreModule.helpers.getTitleWithCaps(); },
+  countX10Increment(): number { return RootStoreModule.helpers.CounterStore.getCountX10(); },
 },
 methods: {
-  ...mapMutations({
-    incrementMutation(commit, payload): void {
-      const state: RootStoreModule = this.$store.state;
-      // convenience method that handles the module path and type-safes the mutation payload
-      commit(...state.CounterStore.module.commitIncrement(2));
-    },
-  }),
-  ...mapActions({
-    decrementAction(dispatch, payload): void {
-      const state: RootStoreModule = this.$store.state;
-      dispatch(...state.CounterStore.module.dispatchDecrement(2));
-    },
-  }),
+  incrementMutation(): void {
+    // convenience method that handles the module path and type-safes the mutation payload
+    RootStoreModule.helpers.CounterStore.commitIncrement(2);
+  },
+  decrementAction(): void {
+    RootStoreModule.helpers.CounterStore.dispatchDecrement(2);
+  },
 },
 ```
 
@@ -102,38 +102,66 @@ Much better! It may appear a little verbose, but it's all typed and your editor'
 
 ### Okay, but what is mmm-typed-vuex really?
 
-Honestly, it's not much...which was my main objective. We're talking about roughly 10 lines of real code...but there is a dash of magic in there.
-It's just enough to determine module paths internally (so you don't have to) and make a module's convenience methods more accessible.
+Honestly, it's not much...which was my main objective. We're talking about roughly 10-20 lines of real code...but there is a dash of magic in there.
+It's just enough to determine module paths internally (so you don't have to) and make a module's helper methods more accessible.
 
 And now, for the measly sum of __$0__, all that magic can be yours ;)
 
 ### Vuex definition examples:
 
-A quick note, this library attempts to be largely unopinionated by not recreating or wrapping any Vuex logic. 
-This leaves the details of store implementation and Vue component consumption up to you.
+A quick note, this library attempts to be largely unopinionated by not recreating or changing any Vuex logic. 
+This leaves the details of the store implementation and how your Vue component consumes it up to you.
 The following is simply my best stab at it. Chances are, you'll find a better way to leverage this simple library :)
 
 ```typescript
 // RootStore.module.ts (with a sub-module defined)
 export default class RootStoreModule extends StoreModule {
-  // state property typings (these are not used to get or set values...only for typings)
+  // static helpers reference (only the RootStoreModule needs this)
+  public static helpers: RootStoreModule;
+
+  // constants
+  public static readonly GET_TITLE_WITH_CAPS: string = 'getTitleWithCaps';
+  public static readonly CHANGE: string = 'change';
+
+  // state property typings (these are not used to set or get values...only for typings)
   public title: string;
-  public module: RootStoreModule;
+
+  // mutations commits, actions dispatches, and getter accessors
+  public dispatchChange(payload: string, options?: DispatchOptions) { return this.dispatch(RootStoreModule.CHANGE, payload, options); }
+  public getTitleWithCaps(): string { return this.get(RootStoreModule.GET_TITLE_WITH_CAPS); }
+
   // sub-modules (these are used to init the modules...as well for typings)
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);
 
   constructor() {
     super();
 
+    // store this instance as the global static helper instance
+    RootStoreModule.helpers = this;
     // don't define a name for root because it's technically not a module nor does it have a namespace
     this._moduleNamespace = '';
 
     this.setOptions(
-      // this object structure should be familiar to you...it's exactly what you've already been doing (except for Object.assign...)
+      // this should be familiar...it's exactly what you've already been doing (no magic here)
       {
-        state: Object.assign(this._generateState(), {
+        state: {
           title: 'Module Example',
-        }),
+        },
+        mutations: {
+          [RootStoreModule.CHANGE](state: RootStoreModule, payload: string) {
+            state.title += payload;
+          },
+        },
+        actions: {
+          [RootStoreModule.CHANGE](context: ActionContext<RootStoreModule, RootStoreModule>, payload: string) {
+            context.commit(RootStoreModule.CHANGE, payload);
+          },
+        },
+        getters: {
+          [RootStoreModule.GET_TITLE_WITH_CAPS]: (state: RootStoreModule, getters: any): string => {
+            return state.title.toUpperCase();
+          },
+        },
         modules: {
           CounterStore: this.CounterStore,
         },
@@ -150,12 +178,13 @@ export default class CounterStoreModule extends StoreModule {
   public static readonly DECREMENT: string = 'decrement';
   public static readonly COUNTX10: string = 'countX10';
 
+  // state property typings (these are not used to set or get values...only for typings)
   public count: number;
-  public module: CounterStoreModule;
 
-  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this.getModulePath(this, CounterStoreModule.DECREMENT), payload, options]; }
-  public commitIncrement(payload: number, options?: CommitOptions) { return [this.getModulePath(this, CounterStoreModule.INCREMENT), payload, options]; }
-  public getCountX10(comp: any): number { return comp.$store.getters[this.getModulePath(this, CounterStoreModule.COUNTX10)]; }
+  // typed mutations commits, actions dispatches, and getter accessors
+  public dispatchDecrement(payload: number, options?: DispatchOptions) { return this.dispatch(CounterStoreModule.DECREMENT, payload, options); }
+  public commitIncrement(payload: number, options?: CommitOptions) { return this.commit(CounterStoreModule.INCREMENT, payload, options); }
+  public getCountX10(): number { return this.get(CounterStoreModule.COUNTX10); }
 
   constructor(parentModule: StoreModule) {
     super();
@@ -164,12 +193,12 @@ export default class CounterStoreModule extends StoreModule {
     this._parentModule = parentModule;
 
     this.setOptions(
-      // this object structure should be familiar to you...it's what you've already been doing
+      // this should be familiar...it's exactly what you've already been doing (no magic here)
       {
         namespaced: true,
-        state: Object.assign(this._generateState(), {
+        state: {
           count: 0,
-        }),
+        },
         mutations: {
           [CounterStoreModule.DECREMENT](state: CounterStoreModule, payload: number) {
             state.count -= payload;
@@ -179,8 +208,10 @@ export default class CounterStoreModule extends StoreModule {
           },
         },
         actions: {
-          [CounterStoreModule.DECREMENT](context: ActionContext<any, any>, payload: number) {
+          [CounterStoreModule.DECREMENT](context: ActionContext<CounterStoreModule, RootStoreModule>, payload: number) {
             context.commit(CounterStoreModule.DECREMENT, payload);
+            // dispatch to another module
+            RootStoreModule.helpers.dispatchChange('-');
           },
         },
         getters: {
@@ -198,9 +229,9 @@ export default class CounterStoreModule extends StoreModule {
 
 * Those class properties (e.g. ```public title: string;```) found within RootStore.module.ts are *not* an anyway used to get or set state values (only for typings).
 * For reasons I won't go into here, ```public CounterStore: CounterStoreModule = new CounterStoreModule(this);``` is an exception to what I mentioned above.
-* Methods for mutations, actions, etc are not intended to actually execute those commands but rather type-safe payloads and auto-magically determine module paths.
+* Methods for mutations, actions, and getters simply type-safe payloads and auto-magically determine module paths.
 
-### Examples
+### Available Examples
 
 1. A baseline, no typings example that showcases the brittleness of the string-heavy approach: [modules-example-no-typings](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-example-no-typings)
 2. A slightly more complex, two-level deep 'module' example: [modules-example](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-example)
@@ -209,9 +240,6 @@ export default class CounterStoreModule extends StoreModule {
 ### Potential negatives
 
 There's more boilerplate. It sucks, but that's just the reality of it right now.
-
-You're now storing a reference to your modules in the store, itself (behind the scenes as part of the 'magic'). 
-This is less than ideal and I'm exploring a number of alternative options.
 
 ### Rebuttal
 
@@ -226,6 +254,12 @@ am back to building out components and services, the last thing I want to do is 
 This is surely not the best way this can be done, but it's at least a step in the right direction, I feel.
 
 If you have ideas on how to improve upon this effort or want to contribute in any way, I'd definitely enjoy hearing from you! Two people's ideas are better than one.
+
+### Version 2 Notes
+
+* The module helpers are no longer being stored in the store (hooray!).
+* You no longer have to use mapState, mapActions, mapMutations, and mapGetters (of course, you can if you still want to)
+* The method 'getModulePath' now caches the paths it caculates to avoid redundant processing on each request
 
 ### Conclusion
 
