@@ -6,7 +6,8 @@ We're talking:
 * no more guess work as to the structure of your store
 * typed state values, mutation / action payloads, and more!
 * simplify even further by getting rid of mapState, mapActions, mapMutations, and mapGetters
-* get state, dispatch actions, etc from anywhere in your code via a single-line command!
+* dispatch actions, get state, etc from anywhere in your code via a single-line command!
+* it's easier than ever to dispatch events from other modules
 
 ## Installation
 
@@ -139,7 +140,7 @@ export default class RootStoreModule extends StoreModule {
     // store this instance as the global static helper instance
     RootStoreModule.helpers = this;
     // don't define a name for root because it's technically not a module nor does it have a namespace
-    this._moduleNamespace = '';
+    this.moduleNamespace = '';
 
     this.setOptions(
       // this should be familiar...it's exactly what you've already been doing (no magic here)
@@ -189,8 +190,8 @@ export default class CounterStoreModule extends StoreModule {
   constructor(parentModule: StoreModule) {
     super();
 
-    this._moduleNamespace = 'CounterStore';
-    this._parentModule = parentModule;
+    this.moduleNamespace = 'CounterStore';
+    this.parentModule = parentModule;
 
     this.setOptions(
       // this should be familiar...it's exactly what you've already been doing (no magic here)
