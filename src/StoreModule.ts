@@ -2,6 +2,10 @@ export default class StoreModule {
   // STATIC PROPERTIES
   public static rootStore: any;
 
+  // PROPERTIES
+  public store: any;
+  public state: any;
+
   // VARIABLES
   protected _moduleNamespace: string;
   protected _modulePathCacheMap: {[path: string]: string};
@@ -14,7 +18,8 @@ export default class StoreModule {
 
   // METHODS
   public init(store: any) {
-    // store static reference
+    this.store = store;
+    this.state = store.state;
     StoreModule.rootStore = store;
   }
 

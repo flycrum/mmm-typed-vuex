@@ -18,10 +18,13 @@
   export default Vue.extend({
     name: 'app',
     computed: {
+      // use map state
       ...mapState({
         title(state: RootStoreModule): string { return state.title; },
-        count(state: RootStoreModule): number { return state.CounterStore.count; },
       }),
+      // or bypass mapState and access through our helper
+      count(state: RootStoreModule): number { return RootStoreModule.helpers.state.CounterStore.count; },
+      // getters
       titleWithCaps(): string { return RootStoreModule.helpers.getTitleWithCaps(); },
       countX10Increment(): number { return RootStoreModule.helpers.CounterStore.getCountX10(); },
     },

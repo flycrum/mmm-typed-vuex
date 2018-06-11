@@ -7,7 +7,8 @@ var StoreModule = /** @class */ (function () {
     }
     // METHODS
     StoreModule.prototype.init = function (store) {
-        // store static reference
+        this.store = store;
+        this.state = store.state;
         StoreModule.rootStore = store;
     };
     StoreModule.prototype.setOptions = function (options) {

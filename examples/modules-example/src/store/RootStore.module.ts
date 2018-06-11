@@ -5,6 +5,7 @@ import { ActionContext, DispatchOptions } from 'vuex';
 export default class RootStoreModule extends StoreModule {
   // static helpers reference (only the RootStoreModule needs this)
   public static helpers: RootStoreModule;
+
   // constants
   public static readonly GET_TITLE_WITH_CAPS: string = 'getTitleWithCaps';
   public static readonly CHANGE: string = 'change';

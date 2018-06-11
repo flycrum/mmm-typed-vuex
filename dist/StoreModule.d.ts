@@ -1,5 +1,7 @@
 export default class StoreModule {
     static rootStore: any;
+    store: any;
+    state: any;
     protected _moduleNamespace: string;
     protected _modulePathCacheMap: {
         [path: string]: string;
