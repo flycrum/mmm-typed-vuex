@@ -1,10 +1,10 @@
 export default class StoreModule {
     static rootStore: any;
     protected _moduleNamespace: string;
-    protected _parentModule: StoreModule;
     protected _modulePathCacheMap: {
         [path: string]: string;
     };
+    protected _parentModule: StoreModule;
     constructor();
     init(store: any): void;
     setOptions(options: any): void;

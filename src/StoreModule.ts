@@ -4,8 +4,8 @@ export default class StoreModule {
 
   // VARIABLES
   protected _moduleNamespace: string;
-  protected _parentModule: StoreModule;
   protected _modulePathCacheMap: {[path: string]: string};
+  protected _parentModule: StoreModule;
 
   // CONSTRUCTOR
   constructor() {

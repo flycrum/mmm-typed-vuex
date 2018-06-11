@@ -11,7 +11,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+  import { mapState } from 'vuex';
   import RootStoreModule from '@/store/RootStore.module';
 
   export default Vue.extend({
@@ -20,27 +20,16 @@
       ...mapState({
         count(state: RootStoreModule): number { return state.count; },
       }),
-      countX10Increment(): number { return this.$store.state.module.getCountX10(this); },
+      countX10Increment(): number { return RootStoreModule.helpers.getCountX10(); },
     },
     methods: {
-      ...mapMutations({
-        incrementMutation(commit, payload): void {
-          // @ts-ignore
-          const state: RootStoreModule = this.$store.state;
-          // convenience method that handles the module path and type-safes the mutation payload
-          // @ts-ignore
-          commit(...state.module.commitIncrement(1));
-        },
-      }),
-      ...mapActions({
-        decrementAction(dispatch, payload): void {
-          // @ts-ignore
-          const state: RootStoreModule = this.$store.state;
-          // convenience method that handles the module path and type-safes the action payload
-          // @ts-ignore
-          dispatch(...state.module.dispatchDecrement(1));
-        },
-      }),
+      incrementMutation(): void {
+        // convenience method that handles the module path and type-safes the mutation payload
+        RootStoreModule.helpers.commitIncrement(2);
+      },
+      decrementAction(): void {
+        RootStoreModule.helpers.dispatchDecrement(2);
+      },
     },
   });
 </script>

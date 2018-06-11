@@ -12,7 +12,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+  import { mapState } from 'vuex';
   import RootStoreModule from '@/store/RootStore.module';
 
   export default Vue.extend({
