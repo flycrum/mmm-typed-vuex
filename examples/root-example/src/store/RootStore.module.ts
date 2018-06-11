@@ -12,9 +12,9 @@ export default class RootStoreModule extends StoreModule {
   public module: RootStoreModule;
 
   // typed mutations commits, actions dispatches, and getter accessors
-  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this._getModulePath(this, RootStoreModule.DECREMENT), payload, options]; }
-  public commitIncrement(payload: number, options?: CommitOptions) { return [this._getModulePath(this, RootStoreModule.INCREMENT), payload, options]; }
-  public getCountX10(comp: any): number { return comp.$store.getters[this._getModulePath(this, RootStoreModule.COUNTX10)]; }
+  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this.getModulePath(this, RootStoreModule.DECREMENT), payload, options]; }
+  public commitIncrement(payload: number, options?: CommitOptions) { return [this.getModulePath(this, RootStoreModule.INCREMENT), payload, options]; }
+  public getCountX10(comp: any): number { return comp.$store.getters[this.getModulePath(this, RootStoreModule.COUNTX10)]; }
 
   constructor() {
     super();

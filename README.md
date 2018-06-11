@@ -153,9 +153,9 @@ export default class CounterStoreModule extends StoreModule {
   public count: number;
   public module: CounterStoreModule;
 
-  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this._getModulePath(this, CounterStoreModule.DECREMENT), payload, options]; }
-  public commitIncrement(payload: number, options?: CommitOptions) { return [this._getModulePath(this, CounterStoreModule.INCREMENT), payload, options]; }
-  public getCountX10(comp: any): number { return comp.$store.getters[this._getModulePath(this, CounterStoreModule.COUNTX10)]; }
+  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this.getModulePath(this, CounterStoreModule.DECREMENT), payload, options]; }
+  public commitIncrement(payload: number, options?: CommitOptions) { return [this.getModulePath(this, CounterStoreModule.INCREMENT), payload, options]; }
+  public getCountX10(comp: any): number { return comp.$store.getters[this.getModulePath(this, CounterStoreModule.COUNTX10)]; }
 
   constructor(parentModule: StoreModule) {
     super();
