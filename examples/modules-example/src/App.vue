@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Title: {{ title }}</h1>
+    <h1>Title: {{ titleWithCaps }}</h1>
     <button @click="decrementAction">-2 (action)</button>
     counter: {{ count }}
     <button @click="incrementMutation">+2 (mutation)</button>
@@ -22,24 +22,21 @@
         title(state: RootStoreModule): string { return state.title; },
         count(state: RootStoreModule): number { return state.CounterStore.count; },
       }),
-      countX10Increment(): number { return this.$store.state.CounterStore.module.getCountX10(this); },
+      titleWithCaps(): string { return RootStoreModule.helpers.getTitleWithCaps(this); },
+      countX10Increment(): number { return RootStoreModule.helpers.CounterStore.getCountX10(this); },
     },
     methods: {
       ...mapMutations({
-        incrementMutation(commit, payload): void {
-          // @ts-ignore
-          const state: RootStoreModule = this.$store.state;
+        incrementMutation(commit): void {
+          const state: RootStoreModule = (this as any).$store.state;
           // convenience method that handles the module path and type-safes the mutation payload
-          // @ts-ignore
-          commit(...state.CounterStore.module.commitIncrement(2));
+          RootStoreModule.helpers.CounterStore.commitIncrement(2, commit);
         },
       }),
       ...mapActions({
-        decrementAction(dispatch, payload): void {
-          // @ts-ignore
-          const state: RootStoreModule = this.$store.state;
-          // @ts-ignore
-          dispatch(...state.CounterStore.module.dispatchDecrement(2));
+        decrementAction(dispatch): void {
+          const state: RootStoreModule = (this as any).$store.state;
+          RootStoreModule.helpers.CounterStore.dispatchDecrement(2, dispatch);
         },
       }),
     },

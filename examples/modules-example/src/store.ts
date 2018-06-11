@@ -1,7 +1,11 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
 import RootStoreModule from '@/store/RootStore.module';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store(new RootStoreModule());
+const root: RootStoreModule = new RootStoreModule();
+const store = new Vuex.Store(root as StoreOptions<{}>);
+root.init(store);
+
+export default store;

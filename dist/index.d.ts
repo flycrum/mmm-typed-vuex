@@ -1,2 +1,1 @@
-export { StoreModule } from './StoreModule';
-export { StoreModuleI } from './StoreModule';
+export { default as StoreModule } from './StoreModule';

@@ -1,4 +1,4 @@
-# mmm-typed-vuex (beta)
+# mmm-typed-vuex (beta 2)
 Vuex and TypeScript living in harmony with one another.
 
 We're talking:
@@ -56,7 +56,7 @@ If so, you now have:
 Disgusting. Definitely not very 'mmm' ;) 
 
 What if one of your property or mutuation names change? What if you move, rename, or delete a module? 
-Yep, you're going to have to remember to find and update all those narly string references throughout your app.
+Yep, you're going to have to find and update all those narly string references each time you make a change.
 Good luck if you're playing around with a substantial codebase.
 
 Adding insult to injury, you sure as heck aren't getting typed state, mutation payloads, etc. Ouch!
@@ -128,7 +128,7 @@ export default class RootStoreModule extends StoreModule {
     // don't define a name for root because it's technically not a module nor does it have a namespace
     this._moduleNamespace = '';
 
-    this._mixinOptions(
+    this.setOptions(
       // this object structure should be familiar to you...it's exactly what you've already been doing (except for Object.assign...)
       {
         state: Object.assign(this._generateState(), {
@@ -163,7 +163,7 @@ export default class CounterStoreModule extends StoreModule {
     this._moduleNamespace = 'CounterStore';
     this._parentModule = parentModule;
 
-    this._mixinOptions(
+    this.setOptions(
       // this object structure should be familiar to you...it's what you've already been doing
       {
         namespaced: true,

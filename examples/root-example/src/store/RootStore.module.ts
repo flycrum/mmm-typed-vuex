@@ -22,7 +22,7 @@ export default class RootStoreModule extends StoreModule {
     // don't define a name for root because it's technically not a module nor does it have a namespace
     this._moduleNamespace = '';
 
-    this._mixinOptions(
+    this.setOptions(
       // this should be familiar to you...it's exactly what you've already been doing (no magic here)
       {
         state: Object.assign(this._generateState(), {

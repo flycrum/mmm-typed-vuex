@@ -1,20 +1,18 @@
 import { ActionContext, CommitOptions, DispatchOptions } from 'vuex';
-import { StoreModule } from '../../../../dist/StoreModule';
+import StoreModule from '../../../../dist/StoreModule';
 
 export default class CounterStoreModule extends StoreModule {
   public static readonly INCREMENT: string = 'increment';
   public static readonly DECREMENT: string = 'decrement';
   public static readonly COUNTX10: string = 'countX10';
 
-  // state property typings
-  // these are not used to set or get values...only for typings
+  // state property typings (these are not used to set or get values...only for typings)
   public count: number;
-  public module: CounterStoreModule;
 
   // typed mutations commits, actions dispatches, and getter accessors
-  public dispatchDecrement(payload: number, options?: DispatchOptions) { return [this._getModulePath(this, CounterStoreModule.DECREMENT), payload, options]; }
-  public commitIncrement(payload: number, options?: CommitOptions) { return [this._getModulePath(this, CounterStoreModule.INCREMENT), payload, options]; }
-  public getCountX10(comp: any): number { return comp.$store.getters[this._getModulePath(this, CounterStoreModule.COUNTX10)]; }
+  public dispatchDecrement(payload: number, dispatchFn: any, options?: DispatchOptions) { return this._dispatch(dispatchFn, CounterStoreModule.DECREMENT, payload, options); }
+  public commitIncrement(payload: number, commitFn: any, options?: CommitOptions) { return this._commit(commitFn, CounterStoreModule.INCREMENT, payload, options); }
+  public getCountX10(comp: any): number { return this._get(CounterStoreModule.COUNTX10, comp); }
 
   constructor(parentModule: StoreModule) {
     super();
@@ -22,13 +20,13 @@ export default class CounterStoreModule extends StoreModule {
     this._moduleNamespace = 'CounterStore';
     this._parentModule = parentModule;
 
-    this._mixinOptions(
-      // this should be familiar to you...it's exactly what you've already been doing (no magic here)
+    this.setOptions(
+      // this should be familiar...it's exactly what you've already been doing (no magic here)
       {
         namespaced: true,
-        state: Object.assign(this._generateState(), {
+        state: {
           count: 0,
-        }),
+        },
         mutations: {
           [CounterStoreModule.DECREMENT](state: CounterStoreModule, payload: number) {
             state.count -= payload;

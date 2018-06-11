@@ -3,15 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var StoreModule = /** @class */ (function () {
     function StoreModule() {
     }
-    StoreModule.prototype._mixinOptions = function (options) {
+    //
+    // METHODS
+    //
+    StoreModule.prototype.init = function (store) {
+        // store static reference
+        //StoreModule.rootStore = store;
+        // set on the vuex store instance
+        // store.mmm = this;
+    };
+    StoreModule.prototype.setOptions = function (options) {
         Object.assign(this, options);
     };
-    // dynamically generated state with module reference
-    StoreModule.prototype._generateState = function () {
-        return {
-            module: this,
-        };
-    };
+    // TODO - lazy set once (cache initial result and use that every subsequent request)
     StoreModule.prototype._getModulePath = function (module, path) {
         path = path || '';
         // prepend this module's name (if one is given)
@@ -19,6 +23,15 @@ var StoreModule = /** @class */ (function () {
         // recursively get ancestor's paths
         return module._parentModule ? this._getModulePath(module._parentModule, path) : path;
     };
+    StoreModule.prototype._commit = function (commitFn, mutationName, payload, options) {
+        return commitFn(this._getModulePath(this, mutationName), payload, options);
+    };
+    StoreModule.prototype._dispatch = function (dispatchFn, actionName, payload, options) {
+        return dispatchFn(this._getModulePath(this, actionName), payload, options);
+    };
+    StoreModule.prototype._get = function (getterName, component) {
+        return component.$store.getters[this._getModulePath(this, getterName)];
+    };
     return StoreModule;
 }());
-exports.StoreModule = StoreModule;
+exports.default = StoreModule;
