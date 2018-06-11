@@ -12,7 +12,7 @@ export default class CounterStoreModule extends StoreModule {
   // typed mutations commits, actions dispatches, and getter accessors
   public dispatchDecrement(payload: number, dispatchFn: any, options?: DispatchOptions) { return this._dispatch(dispatchFn, CounterStoreModule.DECREMENT, payload, options); }
   public commitIncrement(payload: number, commitFn: any, options?: CommitOptions) { return this._commit(commitFn, CounterStoreModule.INCREMENT, payload, options); }
-  public getCountX10(comp: any): number { return this._get(CounterStoreModule.COUNTX10, comp); }
+  public getCountX10(): number { return this.get(CounterStoreModule.COUNTX10); }
 
   constructor(parentModule: StoreModule) {
     super();

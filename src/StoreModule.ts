@@ -2,7 +2,7 @@ export default class StoreModule {
   //
   // STATIC PROPERTIES
   //
-  // public static rootStore: any;
+  public static rootStore: any;
 
   //
   // VARIABLES
@@ -25,10 +25,7 @@ export default class StoreModule {
   //
   public init(store: any) {
     // store static reference
-    //StoreModule.rootStore = store;
-
-    // set on the vuex store instance
-    // store.mmm = this;
+    StoreModule.rootStore = store;
   }
 
   public setOptions(options: any): void {
@@ -45,14 +42,6 @@ export default class StoreModule {
     return this._modulePathCacheMap[path] = this._processModulePath(module, path);
   }
 
-  protected _processModulePath(module: StoreModule, path?: string): string {
-    path = path || '';
-    // prepend this module's name (if one is given)
-    path = (module._moduleNamespace ? module._moduleNamespace + '/' : module._moduleNamespace || '') + path;
-    // recursively get ancestor's paths
-    return module._parentModule ? this._processModulePath(module._parentModule, path) : path;
-  }
-
   protected _commit(commitFn: (type: string, payload?: any, options?: any) => void, mutationName: string, payload?: any, options?: any): any {
     return commitFn(this.getModulePath(this, mutationName), payload, options);
   }
@@ -61,7 +50,15 @@ export default class StoreModule {
     return dispatchFn(this.getModulePath(this, actionName), payload, options);
   }
 
-  protected _get(getterName: string, component: any): any {
-    return component.$store.getters[this.getModulePath(this, getterName)];
+  public get(getterName: string): any {
+    return StoreModule.rootStore.getters[this.getModulePath(this, getterName)];
+  }
+
+  protected _processModulePath(module: StoreModule, path?: string): string {
+    path = path || '';
+    // prepend this module's name (if one is given)
+    path = (module._moduleNamespace ? module._moduleNamespace + '/' : module._moduleNamespace || '') + path;
+    // recursively get ancestor's paths
+    return module._parentModule ? this._processModulePath(module._parentModule, path) : path;
   }
 }

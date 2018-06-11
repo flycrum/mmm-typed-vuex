@@ -22,8 +22,8 @@
         title(state: RootStoreModule): string { return state.title; },
         count(state: RootStoreModule): number { return state.CounterStore.count; },
       }),
-      titleWithCaps(): string { return RootStoreModule.helpers.getTitleWithCaps(this); },
-      countX10Increment(): number { return RootStoreModule.helpers.CounterStore.getCountX10(this); },
+      titleWithCaps(): string { return RootStoreModule.helpers.getTitleWithCaps(); },
+      countX10Increment(): number { return RootStoreModule.helpers.CounterStore.getCountX10(); },
     },
     methods: {
       ...mapMutations({

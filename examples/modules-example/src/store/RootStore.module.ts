@@ -12,7 +12,7 @@ export default class RootStoreModule extends StoreModule {
   public title: string;
 
   // mutations commits, actions dispatches, and getter accessors
-  public getTitleWithCaps(comp: any): string { return comp.$store.getters[this.getModulePath(this, RootStoreModule.GET_TITLE_WITH_CAPS)]; }
+  public getTitleWithCaps(): string { return this.get(RootStoreModule.GET_TITLE_WITH_CAPS); }
 
   // sub-modules (these are used to init the modules...as well for typings)
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);
