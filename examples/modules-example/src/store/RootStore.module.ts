@@ -1,17 +1,19 @@
 import StoreModule from '../../../../dist/StoreModule';
 import CounterStoreModule from '@/store/CounterStore.module';
-import { CommitOptions, DispatchOptions } from 'vuex';
+import { ActionContext, DispatchOptions } from 'vuex';
 
 export default class RootStoreModule extends StoreModule {
   // static helpers reference (only the RootStoreModule needs this)
   public static helpers: RootStoreModule;
   // constants
   public static readonly GET_TITLE_WITH_CAPS: string = 'getTitleWithCaps';
+  public static readonly CHANGE: string = 'change';
 
   // state property typings (these are not used to set or get values...only for typings)
   public title: string;
 
   // mutations commits, actions dispatches, and getter accessors
+  public dispatchChange(payload: string, options?: DispatchOptions) { return this.dispatch(RootStoreModule.CHANGE, payload, options); }
   public getTitleWithCaps(): string { return this.get(RootStoreModule.GET_TITLE_WITH_CAPS); }
 
   // sub-modules (these are used to init the modules...as well for typings)
@@ -30,6 +32,16 @@ export default class RootStoreModule extends StoreModule {
       {
         state: {
           title: 'Module Example',
+        },
+        mutations: {
+          [RootStoreModule.CHANGE](state: RootStoreModule, payload: string) {
+            state.title += payload;
+          },
+        },
+        actions: {
+          [RootStoreModule.CHANGE](context: ActionContext<RootStoreModule, RootStoreModule>, payload: string) {
+            context.commit(RootStoreModule.CHANGE, payload);
+          },
         },
         getters: {
           [RootStoreModule.GET_TITLE_WITH_CAPS]: (state: RootStoreModule, getters: any): string => {
