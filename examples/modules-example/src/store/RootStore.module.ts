@@ -6,7 +6,7 @@ export default class RootStoreModule extends StoreModule {
   // static helpers reference (only the RootStoreModule needs this)
   public static helpers: RootStoreModule;
   // constants
-  public static readonly GET_TITLE_WITH_CAPS: string = 'GET_TITLE_WITH_CAPS';
+  public static readonly GET_TITLE_WITH_CAPS: string = 'getTitleWithCaps';
 
   // state property typings (these are not used to set or get values...only for typings)
   public title: string;

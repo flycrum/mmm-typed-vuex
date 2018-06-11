@@ -26,19 +26,13 @@
       countX10Increment(): number { return RootStoreModule.helpers.CounterStore.getCountX10(); },
     },
     methods: {
-      ...mapMutations({
-        incrementMutation(commit): void {
-          const state: RootStoreModule = (this as any).$store.state;
-          // convenience method that handles the module path and type-safes the mutation payload
-          RootStoreModule.helpers.CounterStore.commitIncrement(2, commit);
-        },
-      }),
-      ...mapActions({
-        decrementAction(dispatch): void {
-          const state: RootStoreModule = (this as any).$store.state;
-          RootStoreModule.helpers.CounterStore.dispatchDecrement(2, dispatch);
-        },
-      }),
+      incrementMutation(): void {
+        // convenience method that handles the module path and type-safes the mutation payload
+        RootStoreModule.helpers.CounterStore.commitIncrement(2);
+      },
+      decrementAction(): void {
+        RootStoreModule.helpers.CounterStore.dispatchDecrement(2);
+      },
     },
   });
 </script>

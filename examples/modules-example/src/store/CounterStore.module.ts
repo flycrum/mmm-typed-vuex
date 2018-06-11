@@ -10,8 +10,8 @@ export default class CounterStoreModule extends StoreModule {
   public count: number;
 
   // typed mutations commits, actions dispatches, and getter accessors
-  public dispatchDecrement(payload: number, dispatchFn: any, options?: DispatchOptions) { return this._dispatch(dispatchFn, CounterStoreModule.DECREMENT, payload, options); }
-  public commitIncrement(payload: number, commitFn: any, options?: CommitOptions) { return this._commit(commitFn, CounterStoreModule.INCREMENT, payload, options); }
+  public dispatchDecrement(payload: number, options?: DispatchOptions) { return this.dispatch(CounterStoreModule.DECREMENT, payload, options); }
+  public commitIncrement(payload: number, options?: CommitOptions) { return this.commit(CounterStoreModule.INCREMENT, payload, options); }
   public getCountX10(): number { return this.get(CounterStoreModule.COUNTX10); }
 
   constructor(parentModule: StoreModule) {

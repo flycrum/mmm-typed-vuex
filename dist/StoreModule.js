@@ -1,15 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StoreModule = /** @class */ (function () {
-    //
     // CONSTRUCTOR
-    //
     function StoreModule() {
         this._modulePathCacheMap = {};
     }
-    //
     // METHODS
-    //
     StoreModule.prototype.init = function (store) {
         // store static reference
         StoreModule.rootStore = store;
@@ -24,15 +20,16 @@ var StoreModule = /** @class */ (function () {
         }
         return this._modulePathCacheMap[path] = this._processModulePath(module, path);
     };
-    StoreModule.prototype._commit = function (commitFn, mutationName, payload, options) {
-        return commitFn(this.getModulePath(this, mutationName), payload, options);
+    StoreModule.prototype.commit = function (mutationName, payload, options) {
+        return StoreModule.rootStore.commit.call(StoreModule.rootStore, this.getModulePath(this, mutationName), payload, options);
     };
-    StoreModule.prototype._dispatch = function (dispatchFn, actionName, payload, options) {
-        return dispatchFn(this.getModulePath(this, actionName), payload, options);
+    StoreModule.prototype.dispatch = function (actionName, payload, options) {
+        return StoreModule.rootStore.dispatch.call(StoreModule.rootStore, this.getModulePath(this, actionName), payload, options);
     };
     StoreModule.prototype.get = function (getterName) {
         return StoreModule.rootStore.getters[this.getModulePath(this, getterName)];
     };
+    // FUNCTIONS
     StoreModule.prototype._processModulePath = function (module, path) {
         path = path || '';
         // prepend this module's name (if one is given)
