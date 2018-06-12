@@ -1,1 +1,1 @@
-export { default as StoreModule } from './StoreModule';
+export { StoreModule } from './StoreModule';

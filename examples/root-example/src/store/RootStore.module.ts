@@ -1,4 +1,4 @@
-import StoreModule from '../../../../dist/StoreModule';
+import { StoreModule } from '../../../../dist/StoreModule';
 import { ActionContext, CommitOptions, DispatchOptions } from 'vuex';
 import CounterStoreModule from '../../../modules-example/src/store/CounterStore.module';
 

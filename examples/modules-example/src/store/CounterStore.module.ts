@@ -1,5 +1,5 @@
 import { ActionContext, CommitOptions, DispatchOptions } from 'vuex';
-import StoreModule from '../../../../dist/StoreModule';
+import { StoreModule } from '../../../../dist/StoreModule';
 import RootStoreModule from '@/store/RootStore.module';
 
 export default class CounterStoreModule extends StoreModule {

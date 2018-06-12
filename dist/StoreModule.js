@@ -40,4 +40,4 @@ var StoreModule = /** @class */ (function () {
     };
     return StoreModule;
 }());
-exports.default = StoreModule;
+exports.StoreModule = StoreModule;

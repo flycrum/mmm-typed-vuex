@@ -1,4 +1,4 @@
-export default class StoreModule {
+export declare class StoreModule {
     static rootStore: any;
     moduleNamespace: string;
     parentModule: StoreModule;

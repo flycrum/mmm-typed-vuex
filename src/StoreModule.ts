@@ -1,4 +1,4 @@
-export default class StoreModule {
+export class StoreModule {
   // STATIC PROPERTIES
   public static rootStore: any;
 
