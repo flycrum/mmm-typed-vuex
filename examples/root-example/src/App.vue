@@ -11,15 +11,12 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapState } from 'vuex';
   import RootStoreModule from '@/store/RootStore.module';
 
   export default Vue.extend({
     name: 'app',
     computed: {
-      ...mapState({
-        count(state: RootStoreModule): number { return state.count; },
-      }),
+      count(): number { return RootStoreModule.state.count; },
       countX10Increment(): number { return RootStoreModule.helpers.getCountX10(); },
     },
     methods: {
