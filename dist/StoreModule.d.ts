@@ -1,14 +1,13 @@
 export declare class StoreModule {
-    static rootStore: any;
+    static rootStoreModule: StoreModule;
+    static vuexStore: any;
     moduleNamespace: string;
     parentModule: StoreModule;
-    store: any;
-    state: any;
     protected _modulePathCacheMap: {
         [path: string]: string;
     };
-    constructor();
-    init(store: any): void;
+    constructor(moduleNamespace: string, parentModule: StoreModule | boolean);
+    init(vuexStore: any): void;
     setOptions(options: any): void;
     getModulePath(module: StoreModule, path?: string): string;
     commit(mutationName: string, payload?: any, options?: any): any;

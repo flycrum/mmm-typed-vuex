@@ -2,33 +2,31 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var StoreModule = /** @class */ (function () {
     // CONSTRUCTOR
-    function StoreModule() {
+    function StoreModule(moduleNamespace, parentModule) {
+        this.moduleNamespace = moduleNamespace;
+        this.parentModule = typeof (parentModule) === 'boolean' ? undefined : parentModule;
         this._modulePathCacheMap = {};
     }
     // METHODS
-    StoreModule.prototype.init = function (store) {
-        this.store = store;
-        this.state = store.state;
-        StoreModule.rootStore = store;
+    StoreModule.prototype.init = function (vuexStore) {
+        StoreModule.vuexStore = vuexStore;
+        StoreModule.rootStoreModule = this;
     };
     StoreModule.prototype.setOptions = function (options) {
         Object.assign(this, options);
     };
     StoreModule.prototype.getModulePath = function (module, path) {
-        var cache = this._modulePathCacheMap[path];
-        if (cache) {
-            return cache;
-        }
-        return this._modulePathCacheMap[path] = this._processModulePath(module, path);
+        // use cached path OR determine path and cache that result
+        return this._modulePathCacheMap[path] || (this._modulePathCacheMap[path] = this._processModulePath(module, path));
     };
     StoreModule.prototype.commit = function (mutationName, payload, options) {
-        return StoreModule.rootStore.commit.call(StoreModule.rootStore, this.getModulePath(this, mutationName), payload, options);
+        return StoreModule.vuexStore.commit.call(StoreModule.vuexStore, this.getModulePath(this, mutationName), payload, options);
     };
     StoreModule.prototype.dispatch = function (actionName, payload, options) {
-        return StoreModule.rootStore.dispatch.call(StoreModule.rootStore, this.getModulePath(this, actionName), payload, options);
+        return StoreModule.vuexStore.dispatch.call(StoreModule.vuexStore, this.getModulePath(this, actionName), payload, options);
     };
     StoreModule.prototype.get = function (getterName) {
-        return StoreModule.rootStore.getters[this.getModulePath(this, getterName)];
+        return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)];
     };
     // FUNCTIONS
     StoreModule.prototype._processModulePath = function (module, path) {
