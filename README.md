@@ -75,7 +75,7 @@ computed: {
   // state
   count(): number { return RootStore.state.CounterStore.count; },
   // getters
-  countX10Increment(): number { return RootStore.getters.CounterStore.getCountX10(); }
+  countX10(): number { return RootStore.getters.CounterStore.getCountX10(); }
 },
 methods: {
   // convenience method that handles the module path and type-safes the mutation payload

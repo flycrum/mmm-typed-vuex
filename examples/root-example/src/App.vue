@@ -4,7 +4,7 @@
     counter: {{ count }}
     <button @click="incrementMutation">+1 (mutation)</button>
     <p>
-      counter (x10): {{ countX10Increment }}
+      counter (x10): {{ countX10 }}
     </p>
   </div>
 </template>
@@ -17,7 +17,7 @@
     name: 'app',
     computed: {
       count(): number { return RootStore.state.count; },
-      countX10Increment(): number { return RootStore.helpers.getCountX10(); },
+      countX10(): number { return RootStore.helpers.getCountX10(); },
     },
     methods: {
       incrementMutation(): void {
