@@ -1,12 +1,12 @@
 import { StoreModule } from 'mmm-typed-vuex';
 import { ActionContext, CommitOptions, DispatchOptions } from 'vuex';
 
-export default class RootStoreModule extends StoreModule {
-  // static helpers reference (only the RootStoreModule needs to do this)
-  public static get actions(): RootStoreModule { return StoreModule.rootStoreModule as RootStoreModule; }
-  public static get getters(): RootStoreModule { return StoreModule.rootStoreModule as RootStoreModule; }
-  public static get mutations(): RootStoreModule { return StoreModule.rootStoreModule as RootStoreModule; }
-  public static get state(): RootStoreModule { return StoreModule.vuexStore.state; }
+export default class RootStore extends StoreModule {
+  // static helpers reference (only the RootStore needs to do this)
+  public static get actions(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  public static get getters(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  public static get mutations(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  public static get state(): RootStore { return StoreModule.vuexStore.state; }
 
   public static readonly COMMIT_INCREMENT: string = 'commitIncrement';
   public static readonly COMMIT_DECREMENT: string = 'commitDecrement';
@@ -17,9 +17,9 @@ export default class RootStoreModule extends StoreModule {
   public count: number;
 
   // typed mutations commits, actions dispatches, and getter accessors
-  public commitIncrement(payload: number, options?: CommitOptions) { return this.commit(RootStoreModule.COMMIT_INCREMENT, payload, options); }
-  public dispatchDecrement(payload: number, options?: DispatchOptions) { return this.dispatch(RootStoreModule.DISPATCH_DECREMENT, payload, options); }
-  public getCountX10(): number { return this.get(RootStoreModule.GET_COUNTX10); }
+  public commitIncrement(payload: number, options?: CommitOptions) { return this.commit(RootStore.COMMIT_INCREMENT, payload, options); }
+  public dispatchDecrement(payload: number, options?: DispatchOptions) { return this.dispatch(RootStore.DISPATCH_DECREMENT, payload, options); }
+  public getCountX10(): number { return this.get(RootStore.GET_COUNTX10); }
 
   constructor() {
     super('', false);
@@ -31,20 +31,20 @@ export default class RootStoreModule extends StoreModule {
           count: 0,
         },
         mutations: {
-          [RootStoreModule.COMMIT_DECREMENT](state: RootStoreModule, payload: number) {
+          [RootStore.COMMIT_DECREMENT](state: RootStore, payload: number) {
             state.count -= payload;
           },
-          [RootStoreModule.COMMIT_INCREMENT](state: RootStoreModule, payload: number) {
+          [RootStore.COMMIT_INCREMENT](state: RootStore, payload: number) {
             state.count += payload;
           },
         },
         actions: {
-          [RootStoreModule.DISPATCH_DECREMENT](context: ActionContext<RootStoreModule, RootStoreModule>, payload: number) {
-            context.commit(RootStoreModule.COMMIT_DECREMENT, payload);
+          [RootStore.DISPATCH_DECREMENT](context: ActionContext<RootStore, RootStore>, payload: number) {
+            context.commit(RootStore.COMMIT_DECREMENT, payload);
           },
         },
         getters: {
-          [RootStoreModule.GET_COUNTX10]: (state: RootStoreModule, getters: any): number => {
+          [RootStore.GET_COUNTX10]: (state: RootStore, getters: any): number => {
             return state.count * 10;
           },
         },

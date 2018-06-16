@@ -2,12 +2,12 @@ import { StoreModule } from '../../../../dist/StoreModule';
 import CounterStoreModule from '@/store/CounterStore.module';
 import { ActionContext, DispatchOptions } from 'vuex';
 
-export default class RootStoreModule extends StoreModule {
-  // static helpers reference (only the RootStoreModule needs to do this)
-  public static get actions(): RootStoreModule { return StoreModule.rootStoreModule as RootStoreModule; }
-  public static get getters(): RootStoreModule { return StoreModule.rootStoreModule as RootStoreModule; }
-  public static get mutations(): RootStoreModule { return StoreModule.rootStoreModule as RootStoreModule; }
-  public static get state(): RootStoreModule { return StoreModule.vuexStore.state; }
+export default class RootStore extends StoreModule {
+  // static helpers reference (only the RootStore needs to do this)
+  public static get actions(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  public static get getters(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  public static get mutations(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  public static get state(): RootStore { return StoreModule.vuexStore.state; }
 
   // constants
   public static readonly COMMIT_CHANGE: string = 'commitChange';
@@ -18,8 +18,8 @@ export default class RootStoreModule extends StoreModule {
   public title: string;
 
   // mutations commits, actions dispatches, and getter accessors
-  public dispatchChange(payload: string, options?: DispatchOptions) { return this.dispatch(RootStoreModule.DISPATCH_CHANGE, payload, options); }
-  public getTitleWithCaps(): string { return this.get(RootStoreModule.GET_TITLE_WITH_CAPS); }
+  public dispatchChange(payload: string, options?: DispatchOptions) { return this.dispatch(RootStore.DISPATCH_CHANGE, payload, options); }
+  public getTitleWithCaps(): string { return this.get(RootStore.GET_TITLE_WITH_CAPS); }
 
   // sub-modules (these are used to init the modules...as well for typings)
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);
@@ -34,17 +34,17 @@ export default class RootStoreModule extends StoreModule {
           title: 'Module Example',
         },
         mutations: {
-          [RootStoreModule.COMMIT_CHANGE](state: RootStoreModule, payload: string) {
+          [RootStore.COMMIT_CHANGE](state: RootStore, payload: string) {
             state.title += payload;
           },
         },
         actions: {
-          [RootStoreModule.DISPATCH_CHANGE](context: ActionContext<RootStoreModule, RootStoreModule>, payload: string) {
-            context.commit(RootStoreModule.COMMIT_CHANGE, payload);
+          [RootStore.DISPATCH_CHANGE](context: ActionContext<RootStore, RootStore>, payload: string) {
+            context.commit(RootStore.COMMIT_CHANGE, payload);
           },
         },
         getters: {
-          [RootStoreModule.GET_TITLE_WITH_CAPS]: (state: RootStoreModule, getters: any): string => {
+          [RootStore.GET_TITLE_WITH_CAPS]: (state: RootStore, getters: any): string => {
             return state.title.toUpperCase();
           },
         },

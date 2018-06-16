@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 import { StoreModule } from '../../../../dist/StoreModule';
-import RootStoreModule from '@/store/RootStore.module';
+import RootStore from '@/store/RootStore.module';
 
 export default class CounterStoreModule extends StoreModule {
   public static readonly COMMIT_INCREMENT: string = 'commitIncrement';
@@ -35,10 +35,10 @@ export default class CounterStoreModule extends StoreModule {
           },
         },
         actions: {
-          [CounterStoreModule.DISPATCH_DECREMENT](context: ActionContext<CounterStoreModule, RootStoreModule>, payload: number) {
+          [CounterStoreModule.DISPATCH_DECREMENT](context: ActionContext<CounterStoreModule, RootStore>, payload: number) {
             context.commit(CounterStoreModule.COMMIT_DECREMENT, payload);
             // dispatch to another module
-            RootStoreModule.actions.dispatchChange('-');
+            RootStore.actions.dispatchChange('-');
           },
         },
         getters: {

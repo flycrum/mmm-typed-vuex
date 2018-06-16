@@ -11,21 +11,21 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import RootStoreModule from '@/store/RootStore.module';
+  import RootStore from '@/store/RootStore.module';
 
   export default Vue.extend({
     name: 'app',
     computed: {
-      count(): number { return RootStoreModule.state.count; },
-      countX10Increment(): number { return RootStoreModule.helpers.getCountX10(); },
+      count(): number { return RootStore.state.count; },
+      countX10Increment(): number { return RootStore.helpers.getCountX10(); },
     },
     methods: {
       incrementMutation(): void {
         // convenience method that handles the module path and type-safes the mutation payload
-        RootStoreModule.helpers.commitIncrement(2);
+        RootStore.helpers.commitIncrement(2);
       },
       decrementAction(): void {
-        RootStoreModule.helpers.dispatchDecrement(2);
+        RootStore.helpers.dispatchDecrement(2);
       },
     },
   });
