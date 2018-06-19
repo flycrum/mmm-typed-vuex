@@ -3,7 +3,7 @@ import AppStore from '@/store/AppStore.module';
 import AppStoreHelper from '@/store/AppStoreHelper';
 import { ActionContext } from 'vuex';
 
-export default class CounterStoreModule extends BaseAppStore {
+export default class CounterStore extends BaseAppStore {
   // state property typings
   public get count(): number { return this.state().CounterStore.count; }
   public set count(value: number) { value = value; }
@@ -25,22 +25,22 @@ export default class CounterStoreModule extends BaseAppStore {
           count: 0,
         },
         mutations: {
-          commitIncrement(state: CounterStoreModule, payload: number) {
+          commitIncrement(state: CounterStore, payload: number) {
             state.count -= payload;
           },
-          commitDecrement(state: CounterStoreModule, payload: number) {
+          commitDecrement(state: CounterStore, payload: number) {
             state.count += payload;
           },
         },
         actions: {
-          dispatchDecrement: (context: ActionContext<CounterStoreModule, AppStore>, payload: number) => {
+          dispatchDecrement: (context: ActionContext<CounterStore, AppStore>, payload: number) => {
             this.commitDecrement(payload);
             // dispatch to another module
             AppStoreHelper.dispatchChange('-');
           },
         },
         getters: {
-          getCountX10: (state: CounterStoreModule, getters: any): number => {
+          getCountX10: (state: CounterStore, getters: any): number => {
             return state.count * 10;
           },
         },

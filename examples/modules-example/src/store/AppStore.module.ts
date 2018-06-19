@@ -1,5 +1,5 @@
 import BaseAppStore from '@/store/BaseAppStore.module';
-import CounterStoreModule from '@/store/CounterStore.module';
+import CounterStore from '@/store/CounterStore.module';
 import { ActionContext, DispatchOptions } from 'vuex';
 
 export default class AppStore extends BaseAppStore {
@@ -16,7 +16,7 @@ export default class AppStore extends BaseAppStore {
   public getTitleWithCaps(): string { return this.get('getTitleWithCaps'); }
 
   // sub-modules (these are used to init the modules...as well for typings)
-  public CounterStore: CounterStoreModule = new CounterStoreModule(this);
+  public CounterStore: CounterStore = new CounterStore(this);
 
   constructor() {
     super('', false);
