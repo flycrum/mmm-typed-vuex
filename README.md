@@ -182,8 +182,11 @@ This is surely not the best way this can be done, but it's at least a step in th
 
 If you have ideas on how to improve upon this effort or want to contribute in any way, I'd definitely enjoy hearing from you! Two people's ideas are better than one.
 
+### Version 4 Notes
+* Store modules are now set to the 'options' property and the root store and its modules must pass this property in during registration
+
 ### Version 3 Notes
-* Accessing state through 'RootScope' has been simplified and actions, mutations, and getters for a similar format for consistency
+* Accessing state through 'RootScope' has been simplified and actions, mutations, and getters follow a similar format for consistency
 * Defining module namespaces and parent modules is now done through the super constructor 
 
 ### Version 2 Notes

@@ -49,7 +49,7 @@ export default class RootStore extends StoreModule {
           },
         },
         modules: {
-          [this.CounterStore.moduleNamespace]: this.CounterStore,
+          [this.CounterStore.moduleNamespace]: this.CounterStore.options,
         },
       },
     );

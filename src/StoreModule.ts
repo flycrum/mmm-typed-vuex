@@ -5,6 +5,7 @@ export class StoreModule {
 
   // PROPERTIES
   public moduleNamespace: string;
+  public options: object;
   public parentModule: StoreModule;
 
   // VARIABLES
@@ -23,8 +24,8 @@ export class StoreModule {
     StoreModule.rootStoreModule = this;
   }
 
-  public setOptions(options: any): void {
-    Object.assign(this, options);
+  public setOptions(options: object): void {
+    this.options = options;
   }
 
   public getModulePath(module: StoreModule, path?: string): string {

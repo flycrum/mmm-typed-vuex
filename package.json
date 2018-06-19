@@ -1,6 +1,6 @@
 {
   "name": "mmm-typed-vuex",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Vuex and TypeScript living in harmony with one another.",
   "author": "crummm",
   "scripts": {
