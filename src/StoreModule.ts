@@ -41,7 +41,11 @@ export class StoreModule {
     return StoreModule.vuexStore.dispatch.call(StoreModule.vuexStore, this.getModulePath(this, actionName), payload, options);
   }
 
-  public get(getterName: string): any {
+  public get(getterName: string, getterFnParam?: any): any {
+    if(getterFnParam) {
+      return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)](getterFnParam);
+    }
+    
     return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)];
   }
 
