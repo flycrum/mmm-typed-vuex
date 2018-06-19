@@ -13,7 +13,7 @@ export default class RootStore extends StoreModule {
   public static readonly DISPATCH_DECREMENT: string = 'dispatchDecrement';
   public static readonly GET_COUNTX10: string = 'getCountX10';
 
-  // state property typings (these are not used to set or get values...only for typings)
+  // state property typings
   public count: number;
 
   // typed mutations commits, actions dispatches, and getter accessors

@@ -23,15 +23,15 @@
         title(state: RootStore): string { return state.title; },
       }),
       // or bypass mapState and access through our helper
-      count(): number { return RootStore.state.CounterStore.count; },
+      count(): number { return RootStore.get().CounterStore.count; },
       // getters
-      titleWithCaps(): string { return RootStore.getters.getTitleWithCaps(); },
-      countX10(): number { return RootStore.getters.CounterStore.getCountX10(); },
+      titleWithCaps(): string { return RootStore.get().getTitleWithCaps(); },
+      countX10(): number { return RootStore.get().CounterStore.getCountX10(); },
     },
     methods: {
       // convenience method that handles the module path and type-safes the mutation payload
-      incrementMutation(): void { RootStore.mutations.CounterStore.commitIncrement(2); },
-      decrementAction(): void { RootStore.actions.CounterStore.dispatchDecrement(2); },
+      incrementMutation(): void { RootStore.get().CounterStore.commitIncrement(2); },
+      decrementAction(): void { RootStore.get().CounterStore.dispatchDecrement(2); },
     },
   });
 </script>

@@ -4,22 +4,28 @@ import { ActionContext, DispatchOptions } from 'vuex';
 
 export default class RootStore extends StoreModule {
   // static helpers reference (only the RootStore needs to do this)
-  public static get actions(): RootStore { return StoreModule.rootStoreModule as RootStore; }
-  public static get getters(): RootStore { return StoreModule.rootStoreModule as RootStore; }
-  public static get mutations(): RootStore { return StoreModule.rootStoreModule as RootStore; }
-  public static get state(): RootStore { return StoreModule.vuexStore.state; }
+  public static get(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+
+  // public static get actions(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  // public static get getters(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  // public static get mutations(): RootStore { return StoreModule.rootStoreModule as RootStore; }
+  // public static get state(): RootStore { return StoreModule.vuexStore.state; }
 
   // constants
   public static readonly COMMIT_CHANGE: string = 'commitChange';
   public static readonly DISPATCH_CHANGE: string = 'dispatchChange';
   public static readonly GET_TITLE_WITH_CAPS: string = 'getTitleWithCaps';
 
-  // state property typings (these are not used to set or get values...only for typings)
+  // state property typings
   public title: string;
 
   // mutations commits, actions dispatches, and getter accessors
   public dispatchChange(payload: string, options?: DispatchOptions) { return this.dispatch(RootStore.DISPATCH_CHANGE, payload, options); }
   public getTitleWithCaps(): string { return this.get(RootStore.GET_TITLE_WITH_CAPS); }
+
+  public state(): RootStore {
+    return StoreModule.vuexStore.state;
+  }
 
   // sub-modules (these are used to init the modules...as well for typings)
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);

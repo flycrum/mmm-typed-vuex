@@ -33,6 +33,10 @@ export class StoreModule {
     return this._modulePathCacheMap[path] || (this._modulePathCacheMap[path] = this._processModulePath(module, path));
   }
 
+  public get state(): StoreModule {
+    return StoreModule.vuexStore.state;
+  }
+
   public commit(mutationName: string, payload?: any, options?: any): any {
     return StoreModule.vuexStore.commit.call(StoreModule.vuexStore, this.getModulePath(this, mutationName), payload, options);
   }
@@ -45,7 +49,7 @@ export class StoreModule {
     if(getterFnParam) {
       return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)](getterFnParam);
     }
-    
+
     return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)];
   }
 

@@ -8,8 +8,8 @@ export default class CounterStoreModule extends StoreModule {
   public static readonly DISPATCH_DECREMENT: string = 'dispatchDecrement';
   public static readonly GET_COUNTX10: string = 'getCountX10';
 
-  // state property typings (these are not used to set or get values...only for typings)
-  public count: number;
+  // state property typings
+  public get count(): number { return ((this.state as any) as RootStore).CounterStore.count; }
 
   // typed mutations commits, actions dispatches, and getter accessors
   public commitIncrement(payload: number) { return this.commit(CounterStoreModule.COMMIT_INCREMENT, payload); }
@@ -38,7 +38,7 @@ export default class CounterStoreModule extends StoreModule {
           [CounterStoreModule.DISPATCH_DECREMENT](context: ActionContext<CounterStoreModule, RootStore>, payload: number) {
             context.commit(CounterStoreModule.COMMIT_DECREMENT, payload);
             // dispatch to another module
-            RootStore.actions.dispatchChange('-');
+            RootStore.get().dispatchChange('-');
           },
         },
         getters: {
