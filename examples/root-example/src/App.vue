@@ -11,7 +11,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import RootStore from '@/store/RootStore.module';
+  import RootStore from '@/store/AppStore.module';
 
   export default Vue.extend({
     name: 'app',

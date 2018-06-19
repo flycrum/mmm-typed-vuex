@@ -1,11 +1,11 @@
 import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
-import RootStore from '@/store/RootStore.module';
+import Vuex from 'vuex';
+import AppStore from '@/store/AppStore.module';
 
 Vue.use(Vuex);
 
-const root: RootStore = new RootStore();
-const store = new Vuex.Store(root.options);
-root.init(store);
+const appStore = AppStore.get();
+const store = new Vuex.Store(appStore.options);
+appStore.init(store);
 
 export default store;

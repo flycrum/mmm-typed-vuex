@@ -1,12 +1,12 @@
-import { ActionContext } from 'vuex';
-import { StoreModule } from '../../../../dist/StoreModule';
-import RootStore from '@/store/RootStore.module';
 import BaseAppStore from '@/store/BaseAppStore.module';
+import AppStore from '@/store/AppStore.module';
+import AppStoreHelper from '@/store/AppStoreHelper';
+import { ActionContext } from 'vuex';
 
 export default class CounterStoreModule extends BaseAppStore {
   // state property typings
   public get count(): number { return this.state().CounterStore.count; }
-  public set count(value: number) {}
+  public set count(value: number) { value = value; }
 
   // typed mutations commits, actions dispatches, and getter accessors
   public commitDecrement(payload: number) { return this.commit('commitDecrement', payload); }
@@ -14,7 +14,7 @@ export default class CounterStoreModule extends BaseAppStore {
   public dispatchDecrement(payload: number) { return this.dispatch('dispatchDecrement', payload); }
   public getCountX10(): number { return this.get('getCountX10'); }
 
-  constructor(parentModule: StoreModule) {
+  constructor(parentModule: BaseAppStore) {
     super('CounterStore', parentModule);
 
     this.setOptions(
@@ -33,10 +33,10 @@ export default class CounterStoreModule extends BaseAppStore {
           },
         },
         actions: {
-          dispatchDecrement: (context: ActionContext<CounterStoreModule, RootStore>, payload: number) => {
+          dispatchDecrement: (context: ActionContext<CounterStoreModule, AppStore>, payload: number) => {
             this.commitDecrement(payload);
             // dispatch to another module
-            RootStore.get().dispatchChange('-');
+            AppStoreHelper.dispatchChange('-');
           },
         },
         getters: {
@@ -48,5 +48,3 @@ export default class CounterStoreModule extends BaseAppStore {
     );
   }
 }
-
-
