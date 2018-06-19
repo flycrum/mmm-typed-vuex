@@ -13,7 +13,7 @@ var StoreModule = /** @class */ (function () {
         StoreModule.rootStoreModule = this;
     };
     StoreModule.prototype.setOptions = function (options) {
-        Object.assign(this, options);
+        this.options = options;
     };
     StoreModule.prototype.getModulePath = function (module, path) {
         // use cached path OR determine path and cache that result
@@ -25,7 +25,10 @@ var StoreModule = /** @class */ (function () {
     StoreModule.prototype.dispatch = function (actionName, payload, options) {
         return StoreModule.vuexStore.dispatch.call(StoreModule.vuexStore, this.getModulePath(this, actionName), payload, options);
     };
-    StoreModule.prototype.get = function (getterName) {
+    StoreModule.prototype.get = function (getterName, getterFnParam) {
+        if (getterFnParam) {
+            return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)](getterFnParam);
+        }
         return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)];
     };
     // FUNCTIONS
