@@ -23,10 +23,6 @@ export default class RootStore extends StoreModule {
   public dispatchChange(payload: string, options?: DispatchOptions) { return this.dispatch(RootStore.DISPATCH_CHANGE, payload, options); }
   public getTitleWithCaps(): string { return this.get(RootStore.GET_TITLE_WITH_CAPS); }
 
-  public state(): RootStore {
-    return StoreModule.vuexStore.state;
-  }
-
   // sub-modules (these are used to init the modules...as well for typings)
   public CounterStore: CounterStoreModule = new CounterStoreModule(this);
 

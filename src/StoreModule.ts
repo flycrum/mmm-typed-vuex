@@ -5,7 +5,7 @@ export class StoreModule {
 
   // PROPERTIES
   public moduleNamespace: string;
-  public options: object;
+  public options: object; // the vuex options object used to register the store
   public parentModule: StoreModule;
 
   // VARIABLES
@@ -31,10 +31,6 @@ export class StoreModule {
   public getModulePath(module: StoreModule, path?: string): string {
     // use cached path OR determine path and cache that result
     return this._modulePathCacheMap[path] || (this._modulePathCacheMap[path] = this._processModulePath(module, path));
-  }
-
-  public get state(): StoreModule {
-    return StoreModule.vuexStore.state;
   }
 
   public commit(mutationName: string, payload?: any, options?: any): any {

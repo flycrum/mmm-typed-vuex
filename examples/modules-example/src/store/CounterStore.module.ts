@@ -1,48 +1,46 @@
 import { ActionContext } from 'vuex';
 import { StoreModule } from '../../../../dist/StoreModule';
 import RootStore from '@/store/RootStore.module';
+import BaseAppStore from '@/store/BaseAppStore.module';
 
-export default class CounterStoreModule extends StoreModule {
-  public static readonly COMMIT_INCREMENT: string = 'commitIncrement';
-  public static readonly COMMIT_DECREMENT: string = 'commitDecrement';
-  public static readonly DISPATCH_DECREMENT: string = 'dispatchDecrement';
-  public static readonly GET_COUNTX10: string = 'getCountX10';
-
+export default class CounterStoreModule extends BaseAppStore {
   // state property typings
-  public get count(): number { return ((this.state as any) as RootStore).CounterStore.count; }
+  public get count(): number { return this.state().CounterStore.count; }
+  public set count(value: number) {}
 
   // typed mutations commits, actions dispatches, and getter accessors
-  public commitIncrement(payload: number) { return this.commit(CounterStoreModule.COMMIT_INCREMENT, payload); }
-  public dispatchDecrement(payload: number) { return this.dispatch(CounterStoreModule.DISPATCH_DECREMENT, payload); }
-  public getCountX10(): number { return this.get(CounterStoreModule.GET_COUNTX10); }
+  public commitDecrement(payload: number) { return this.commit('commitDecrement', payload); }
+  public commitIncrement(payload: number) { return this.commit('commitIncrement', payload); }
+  public dispatchDecrement(payload: number) { return this.dispatch('dispatchDecrement', payload); }
+  public getCountX10(): number { return this.get('getCountX10'); }
 
   constructor(parentModule: StoreModule) {
     super('CounterStore', parentModule);
 
     this.setOptions(
-      // this should be familiar...it's exactly what you've already been doing (no magic here)
+      // this should be familiar...it's what you've already been doing (no magic here)
       {
         namespaced: true,
         state: {
           count: 0,
         },
         mutations: {
-          [CounterStoreModule.COMMIT_DECREMENT](state: CounterStoreModule, payload: number) {
+          commitIncrement(state: CounterStoreModule, payload: number) {
             state.count -= payload;
           },
-          [CounterStoreModule.COMMIT_INCREMENT](state: CounterStoreModule, payload: number) {
+          commitDecrement(state: CounterStoreModule, payload: number) {
             state.count += payload;
           },
         },
         actions: {
-          [CounterStoreModule.DISPATCH_DECREMENT](context: ActionContext<CounterStoreModule, RootStore>, payload: number) {
-            context.commit(CounterStoreModule.COMMIT_DECREMENT, payload);
+          dispatchDecrement: (context: ActionContext<CounterStoreModule, RootStore>, payload: number) => {
+            this.commitDecrement(payload);
             // dispatch to another module
             RootStore.get().dispatchChange('-');
           },
         },
         getters: {
-          [CounterStoreModule.GET_COUNTX10]: (state: CounterStoreModule, getters: any): number => {
+          getCountX10: (state: CounterStoreModule, getters: any): number => {
             return state.count * 10;
           },
         },
