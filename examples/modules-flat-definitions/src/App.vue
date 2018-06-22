@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Title: {{ titleWithCaps }}</h1>
+    <h1>{{ titleWithCaps }}</h1>
     <button @click="decrementAction">-2 (action)</button>
     counter: {{ count }}
     <button @click="incrementMutation">+2 (mutation)</button>

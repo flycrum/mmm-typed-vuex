@@ -1,60 +1,77 @@
 export class StoreModule {
-  // STATIC PROPERTIES
-  public static rootStoreModule: StoreModule;
-  public static vuexStore: any;
-
   // PROPERTIES
-  public moduleNamespace: string;
-  public options: object; // the vuex options object used to register the store
-  public parentModule: StoreModule;
+
+  public options: any; // the vuex options object used to register the store
 
   // VARIABLES
-  protected _modulePathCacheMap: {[path: string]: string};
+
+  protected _isRoot: boolean; // whether this is the root module as seen in the store
+  protected _context: any; // the content for for this module
 
   // CONSTRUCTOR
-  constructor(moduleNamespace: string, parentModule: StoreModule | boolean) {
-    this.moduleNamespace = moduleNamespace;
-    this.parentModule = typeof(parentModule) === 'boolean' ? undefined : parentModule;
-    this._modulePathCacheMap = {};
+
+  constructor(isRoot ?: boolean) {
+    this._isRoot = isRoot || false;
   }
 
   // METHODS
-  public init(vuexStore: any) {
-    StoreModule.vuexStore = vuexStore;
-    StoreModule.rootStoreModule = this;
-  }
 
-  public setOptions(options: object): void {
+  public setOptions(options: any): void {
     this.options = options;
-  }
-
-  public getModulePath(module: StoreModule, path?: string): string {
-    // use cached path OR determine path and cache that result
-    return this._modulePathCacheMap[path] || (this._modulePathCacheMap[path] = this._processModulePath(module, path));
+    this._setupInits(options);
   }
 
   public commit(mutationName: string, payload?: any, options?: any): any {
-    return StoreModule.vuexStore.commit.call(StoreModule.vuexStore, this.getModulePath(this, mutationName), payload, options);
+    return this._context.commit(mutationName, payload, options);
   }
 
   public dispatch(actionName: string, payload?: any, options?: any): any {
-    return StoreModule.vuexStore.dispatch.call(StoreModule.vuexStore, this.getModulePath(this, actionName), payload, options);
+    return this._context.dispatch(actionName, payload, options);
   }
 
   public get(getterName: string, getterFnParam?: any): any {
     if(getterFnParam) {
-      return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)](getterFnParam);
+      return this._context.getters[getterName](getterFnParam);
     }
 
-    return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)];
+    return this._context.getters[getterName];
   }
 
   // FUNCTIONS
-  protected _processModulePath(module: StoreModule, path?: string): string {
-    path = path || '';
-    // prepend this module's name (if one is given)
-    path = (module.moduleNamespace ? module.moduleNamespace + '/' : module.moduleNamespace || '') + path;
-    // recursively get ancestor's paths
-    return module.parentModule ? this._processModulePath(module.parentModule, path) : path;
+
+  protected _setupInits(options: any) {
+    options.actions = options.actions || {};
+    options.actions._mmmInit = (context: any, module: any) => {
+      // console.log('_mmmInit dispatched and received');
+      this._context = context;
+      // this is the ole switcheroo...allowing each module to 'type' their 'state' property but then setting the underlying vuex state to it here
+      this['state'] = context.state;
+
+      if(options.actions.initMmm) {
+        context.dispatch('initMmm', context, module);
+      }
+    };
+
+    // if root store / module
+    if(this._isRoot) {
+      options.plugins = options.plugins || [];
+      options.plugins.push(
+        (context: any) => {
+          if(context._modules && context._modules.root) {
+            this._recursivelyFindModulesAndDispatchInit(context._modules.root);
+          }
+        }
+      );
+    }
+  }
+
+  protected _recursivelyFindModulesAndDispatchInit(module: any) {
+    module.context.dispatch('_mmmInit', module.context, module);
+
+    if(module._children) {
+      for(const moduleName in module._children) {
+        this._recursivelyFindModulesAndDispatchInit(module._children[moduleName]);
+      }
+    }
   }
 }

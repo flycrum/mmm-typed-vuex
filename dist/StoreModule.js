@@ -2,42 +2,56 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var StoreModule = /** @class */ (function () {
     // CONSTRUCTOR
-    function StoreModule(moduleNamespace, parentModule) {
-        this.moduleNamespace = moduleNamespace;
-        this.parentModule = typeof (parentModule) === 'boolean' ? undefined : parentModule;
-        this._modulePathCacheMap = {};
+    function StoreModule(isRoot) {
+        this._isRoot = isRoot || false;
     }
     // METHODS
-    StoreModule.prototype.init = function (vuexStore) {
-        StoreModule.vuexStore = vuexStore;
-        StoreModule.rootStoreModule = this;
-    };
     StoreModule.prototype.setOptions = function (options) {
         this.options = options;
-    };
-    StoreModule.prototype.getModulePath = function (module, path) {
-        // use cached path OR determine path and cache that result
-        return this._modulePathCacheMap[path] || (this._modulePathCacheMap[path] = this._processModulePath(module, path));
+        this._setupInits(options);
     };
     StoreModule.prototype.commit = function (mutationName, payload, options) {
-        return StoreModule.vuexStore.commit.call(StoreModule.vuexStore, this.getModulePath(this, mutationName), payload, options);
+        return this._context.commit(mutationName, payload, options);
     };
     StoreModule.prototype.dispatch = function (actionName, payload, options) {
-        return StoreModule.vuexStore.dispatch.call(StoreModule.vuexStore, this.getModulePath(this, actionName), payload, options);
+        return this._context.dispatch(actionName, payload, options);
     };
     StoreModule.prototype.get = function (getterName, getterFnParam) {
         if (getterFnParam) {
-            return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)](getterFnParam);
+            return this._context.getters[getterName](getterFnParam);
         }
-        return StoreModule.vuexStore.getters[this.getModulePath(this, getterName)];
+        return this._context.getters[getterName];
     };
     // FUNCTIONS
-    StoreModule.prototype._processModulePath = function (module, path) {
-        path = path || '';
-        // prepend this module's name (if one is given)
-        path = (module.moduleNamespace ? module.moduleNamespace + '/' : module.moduleNamespace || '') + path;
-        // recursively get ancestor's paths
-        return module.parentModule ? this._processModulePath(module.parentModule, path) : path;
+    StoreModule.prototype._setupInits = function (options) {
+        var _this = this;
+        options.actions = options.actions || {};
+        options.actions._mmmInit = function (context, module) {
+            // console.log('_mmmInit dispatched and received');
+            _this._context = context;
+            // this is the ole switcheroo...allowing each module to 'type' their 'state' property but then setting the underlying vuex state to it here
+            _this['state'] = context.state;
+            if (options.actions.initMmm) {
+                context.dispatch('initMmm', context, module);
+            }
+        };
+        // if root store / module
+        if (this._isRoot) {
+            options.plugins = options.plugins || [];
+            options.plugins.push(function (context) {
+                if (context._modules && context._modules.root) {
+                    _this._recursivelyFindModulesAndDispatchInit(context._modules.root);
+                }
+            });
+        }
+    };
+    StoreModule.prototype._recursivelyFindModulesAndDispatchInit = function (module) {
+        module.context.dispatch('_mmmInit', module.context, module);
+        if (module._children) {
+            for (var moduleName in module._children) {
+                this._recursivelyFindModulesAndDispatchInit(module._children[moduleName]);
+            }
+        }
     };
     return StoreModule;
 }());

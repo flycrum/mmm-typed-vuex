@@ -1,47 +1,48 @@
-import BaseAppStore from '@/store/BaseAppStore.module';
+import { StoreModule } from '../../../../dist';
+import { ActionContext } from 'vuex';
 import AppStore from '@/store/AppStore.module';
 import AppStoreHelper from '@/store/AppStoreHelper';
-import { ActionContext } from 'vuex';
 
-export default class CounterStore extends BaseAppStore {
+export default class CounterStore extends StoreModule {
   // state property typings
-  public get count(): number { return this.state().CounterStore.count; }
+  public state: CounterStore;
+  public get count(): number { return this.state.count; }
   public set count(value: number) { value = value; }
 
-  // typed mutations commits, actions dispatches, and getter accessors
+  // mutations commits, actions dispatches, and getter accessors
+  public getCountX10(): number { return this.get('getCountX10'); }
   public commitDecrement(payload: number) { return this.commit('commitDecrement', payload); }
   public commitIncrement(payload: number) { return this.commit('commitIncrement', payload); }
   public dispatchDecrement(payload: number) { return this.dispatch('dispatchDecrement', payload); }
-  public getCountX10(): number { return this.get('getCountX10'); }
 
-  constructor(parentModule: BaseAppStore) {
-    super('CounterStore', parentModule);
+  constructor() {
+    super();
 
     this.setOptions(
-      // this should be familiar...it's what you've already been doing (no magic here)
+      // this should be familiar...it's what you've already been doing except for (optionally) typing the state object
       {
         namespaced: true,
         state: {
           count: 0,
+        } as CounterStore,
+        getters: {
+          getCountX10: (state: CounterStore): number => {
+            return state.count * 10;
+          },
         },
         mutations: {
-          commitIncrement(state: CounterStore, payload: number) {
-            state.count -= payload;
-          },
           commitDecrement(state: CounterStore, payload: number) {
             state.count += payload;
+          },
+          commitIncrement(state: CounterStore, payload: number) {
+            state.count -= payload;
           },
         },
         actions: {
           dispatchDecrement: (context: ActionContext<CounterStore, AppStore>, payload: number) => {
             this.commitDecrement(payload);
             // dispatch to another module
-            AppStoreHelper.dispatchChange('-');
-          },
-        },
-        getters: {
-          getCountX10: (state: CounterStore, getters: any): number => {
-            return state.count * 10;
+            AppStoreHelper.dispatchAddToTitle('-');
           },
         },
       },
