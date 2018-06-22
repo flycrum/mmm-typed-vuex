@@ -153,7 +153,7 @@ export default class CounterStore extends StoreModule {
 
 ### Available Examples
 
-1. A baseline, no typings example that showcases the brittleness of the string-heavy approach: [modules-no-typings](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-no-typing)
+1. A baseline, no typings example that showcases the brittleness of the typical string-heavy approach: [baseline-no-typings](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/baseline-no-typings)
 2. A two-level deep 'module' example with concise, flattened module typing definitions: [modules-flat-definitions](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-flat-definitions)
 3. An object-defined approach to typings that more clearly separates state, actions, mutations, getters and modules: [modules-object-definitions](https://github.com/crummm/mmm-typed-vuex/tree/master/examples/modules-object-definitions)
 
