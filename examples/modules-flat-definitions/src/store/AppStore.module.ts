@@ -1,4 +1,4 @@
-import { StoreModule } from '../../../../dist/StoreModule';
+import { StoreModule } from 'mmm-typed-vuex';
 import CounterStore from '@/store/CounterStore.module';
 import { ActionContext } from 'vuex';
 

@@ -3784,9 +3784,9 @@ mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mmm-typed-vuex@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/mmm-typed-vuex/-/mmm-typed-vuex-2.0.2.tgz#f0dc096a525264e7df1d85a07f06ce9e5b5163c0"
+mmm-typed-vuex@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/mmm-typed-vuex/-/mmm-typed-vuex-4.0.0.tgz#70bdea89b7b60717b342438dd840a313bc842c02"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
