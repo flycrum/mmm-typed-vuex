@@ -1,4 +1,4 @@
-# mmm-typed-vuex (beta 3)
+# mmm-typed-vuex (beta 4)
 Vuex and TypeScript living in harmony with one another.
 
 We're talking:
@@ -127,10 +127,10 @@ export default class CounterStore extends StoreModule {
         },
         mutations: {
           commitDecrement(state: CounterStore, payload: number) {
-            state.count += payload;
+            state.count -= payload;
           },
           commitIncrement(state: CounterStore, payload: number) {
-            state.count -= payload;
+            state.count += payload;
           },
         },
         actions: {

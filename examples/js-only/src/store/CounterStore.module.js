@@ -29,10 +29,10 @@ export default class CounterStore extends StoreModule {
         },
         mutations: {
           commitDecrement(state, payload) {
-            state.count += payload;
+            state.count -= payload;
           },
           commitIncrement(state, payload) {
-            state.count -= payload;
+            state.count += payload;
           },
         },
         actions: {

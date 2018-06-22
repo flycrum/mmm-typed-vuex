@@ -41,10 +41,10 @@ export default class CounterStore extends StoreModule {
         },
         mutations: {
           decrement(state: CounterStoreStateI, payload: number) {
-            state.count += payload;
+            state.count -= payload;
           },
           increment(state: CounterStoreStateI, payload: number) {
-            state.count -= payload;
+            state.count += payload;
           },
         },
         actions: {
