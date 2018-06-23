@@ -40,8 +40,8 @@ export default class AppStore extends StoreModule {
           },
         },
         actions: {
-          initMmm: (context: ActionContext<AppStore, AppStore>) => {
-            this.commitAddToTitle(' - initMmm');
+          initModule: (context: ActionContext<AppStore, AppStore>) => {
+            this.commitAddToTitle(' - initModule');
           },
           dispatchAddToTitle: (context: ActionContext<AppStore, AppStore>, payload: string) => {
             this.commitAddToTitle(payload);

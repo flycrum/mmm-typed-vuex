@@ -49,8 +49,8 @@ export default class AppStore extends StoreModule {
           },
         },
         actions: {
-          initMmm: (context: ActionContext<AppStoreStateI, AppStoreStateI>) => {
-            this.mutations.addToTitle(' - initMmm');
+          initModule: (context: ActionContext<AppStoreStateI, AppStoreStateI>) => {
+            this.mutations.addToTitle(' - initModule');
           },
           addToTitle: (context: ActionContext<AppStoreStateI, AppStoreStateI>, payload: string) => {
             this.mutations.addToTitle(payload);

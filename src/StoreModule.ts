@@ -5,8 +5,9 @@ export class StoreModule {
 
   // VARIABLES
 
-  protected _isRoot: boolean; // whether this is the root module as seen in the store
   protected _context: any; // the content for for this module
+  protected _isRoot: boolean; // whether this is the root module as seen in the store
+  protected _store: any;
 
   // CONSTRUCTOR
 
@@ -40,15 +41,17 @@ export class StoreModule {
   // FUNCTIONS
 
   protected _setupInits(options: any) {
-    options.actions = options.actions || {};
-    options.actions._mmmInit = (context: any, module: any) => {
-      // console.log('_mmmInit dispatched and received');
-      this._context = context;
-      // this is the ole switcheroo...allowing each module to 'type' their 'state' property but then setting the underlying vuex state to it here
-      this['state'] = context.state;
+    const that = this;
 
-      if(options.actions.initMmm) {
-        context.dispatch('initMmm', context, module);
+    options.actions = options.actions || {};
+    options.actions._mmmInit = function(context: any, module: any) {
+      that._store = this;
+      that._context = context;
+      // this is the ole switcheroo...allowing each module to 'type' their 'state' property but then setting the underlying vuex state to it here
+      that['state'] = context.state;
+
+      if(options.actions.initModule) {
+        context.dispatch('initModule', context, module);
       }
     };
 

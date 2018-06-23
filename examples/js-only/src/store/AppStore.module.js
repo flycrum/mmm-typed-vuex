@@ -33,8 +33,8 @@ export default class AppStore extends StoreModule {
           },
         },
         actions: {
-          initMmm: (context) => {
-            this.commitAddToTitle(' - initMmm');
+          initModule: (context) => {
+            this.commitAddToTitle(' - initModule');
           },
           dispatchAddToTitle: (context, payload) => {
             this.commitAddToTitle(payload);

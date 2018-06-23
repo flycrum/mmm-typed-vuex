@@ -25,14 +25,15 @@ var StoreModule = /** @class */ (function () {
     // FUNCTIONS
     StoreModule.prototype._setupInits = function (options) {
         var _this = this;
+        var that = this;
         options.actions = options.actions || {};
         options.actions._mmmInit = function (context, module) {
-            // console.log('_mmmInit dispatched and received');
-            _this._context = context;
+            that._store = this;
+            that._context = context;
             // this is the ole switcheroo...allowing each module to 'type' their 'state' property but then setting the underlying vuex state to it here
-            _this['state'] = context.state;
-            if (options.actions.initMmm) {
-                context.dispatch('initMmm', context, module);
+            that['state'] = context.state;
+            if (options.actions.initModule) {
+                context.dispatch('initModule', context, module);
             }
         };
         // if root store / module

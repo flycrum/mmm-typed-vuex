@@ -1,7 +1,8 @@
 export declare class StoreModule {
     options: any;
-    protected _isRoot: boolean;
     protected _context: any;
+    protected _isRoot: boolean;
+    protected _store: any;
     constructor(isRoot?: boolean);
     setOptions(options: any): void;
     commit(mutationName: string, payload?: any, options?: any): any;

@@ -1,4 +1,4 @@
-# mmm-typed-vuex (beta 4)
+# mmm-typed-vuex (beta 5)
 Vuex and TypeScript living in harmony with one another.
 
 We're talking:
