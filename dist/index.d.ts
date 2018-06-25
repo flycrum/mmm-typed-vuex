@@ -1,1 +1,1 @@
-export { StoreModule } from './StoreModule';
+export { StoreModule, mmmAction, mmmMutation, mmmGetter, mmmState } from './StoreModule';

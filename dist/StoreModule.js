@@ -57,3 +57,48 @@ var StoreModule = /** @class */ (function () {
     return StoreModule;
 }());
 exports.StoreModule = StoreModule;
+function mmmState(target, propertyKey) {
+    Object.defineProperty(target, propertyKey, {
+        get: function () { return this.state[propertyKey]; },
+    });
+}
+exports.mmmState = mmmState;
+function mmmMutation() {
+    return function (target, propertyKey, descriptor) {
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return this.commit.apply(this, [propertyKey].concat(args));
+        };
+        return descriptor;
+    };
+}
+exports.mmmMutation = mmmMutation;
+function mmmAction() {
+    return function (target, propertyKey, descriptor) {
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return this.dispatch.apply(this, [propertyKey].concat(args));
+        };
+        return descriptor;
+    };
+}
+exports.mmmAction = mmmAction;
+function mmmGetter() {
+    return function (target, propertyKey, descriptor) {
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return this.get.apply(this, [propertyKey].concat(args));
+        };
+        return descriptor;
+    };
+}
+exports.mmmGetter = mmmGetter;

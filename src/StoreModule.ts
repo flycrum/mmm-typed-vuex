@@ -78,3 +78,36 @@ export class StoreModule {
     }
   }
 }
+
+export function mmmState(target: object, propertyKey: string | symbol) {
+  Object.defineProperty(target, propertyKey, {
+    get() { return this.state[propertyKey]; },
+  });
+}
+
+export function mmmMutation() {
+  return (target, propertyKey: string, descriptor: PropertyDescriptor): any => {
+    descriptor.value = function(...args) {
+      return this.commit(propertyKey, ...args);
+    };
+    return descriptor;
+  };
+}
+
+export function mmmAction() {
+  return (target, propertyKey: string, descriptor: PropertyDescriptor): any => {
+    descriptor.value = function(...args) {
+      return this.dispatch(propertyKey, ...args);
+    };
+    return descriptor;
+  };
+}
+
+export function mmmGetter() {
+  return (target, propertyKey: string, descriptor: PropertyDescriptor): any => {
+    descriptor.value = function(...args) {
+      return this.get(propertyKey, ...args);
+    };
+    return descriptor;
+  };
+}
