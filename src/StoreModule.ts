@@ -30,9 +30,9 @@ export class StoreModule {
     return this._context.dispatch(actionName, payload, options);
   }
 
-  public get(getterName: string, getterFnParam?: any): any {
-    if(getterFnParam) {
-      return this._context.getters[getterName](getterFnParam);
+  public get(getterName: string, ...getterFnParams): any {
+    if(getterFnParams && getterFnParams.length > 0) {
+      return this._context.getters[getterName](...getterFnParams);
     }
 
     return this._context.getters[getterName];

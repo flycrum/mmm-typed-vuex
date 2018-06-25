@@ -16,11 +16,16 @@ var StoreModule = /** @class */ (function () {
     StoreModule.prototype.dispatch = function (actionName, payload, options) {
         return this._context.dispatch(actionName, payload, options);
     };
-    StoreModule.prototype.get = function (getterName, getterFnParam) {
-        if (getterFnParam) {
-            return this._context.getters[getterName](getterFnParam);
+    StoreModule.prototype.get = function (getterName) {
+        var getterFnParams = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            getterFnParams[_i - 1] = arguments[_i];
+        }
+        if (getterFnParams && getterFnParams.length > 0) {
+            return (_a = this._context.getters)[getterName].apply(_a, getterFnParams);
         }
         return this._context.getters[getterName];
+        var _a;
     };
     // FUNCTIONS
     StoreModule.prototype._setupInits = function (options) {

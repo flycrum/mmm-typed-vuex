@@ -7,7 +7,7 @@ export declare class StoreModule {
     setOptions(options: any): void;
     commit(mutationName: string, payload?: any, options?: any): any;
     dispatch(actionName: string, payload?: any, options?: any): any;
-    get(getterName: string, getterFnParam?: any): any;
+    get(getterName: string, ...getterFnParams: any[]): any;
     protected _setupInits(options: any): void;
     protected _recursivelyFindModulesAndDispatchInit(module: any): void;
 }
