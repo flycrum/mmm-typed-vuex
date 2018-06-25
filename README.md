@@ -1,15 +1,42 @@
 # mmm-typed-vuex (beta 5)
-Vuex and TypeScript living in harmony with one another.
+Vuex and TypeScript living in harmony with one another 🎶
 
-We're talking:
-* no more string references in your Vue components (those suck)
-* no more guess work as to the structure of your store (thank goodness)
+### Okay, but what is mmm-typed-vuex?
+
+This library is all about:
+* fewer string references in your Vue components (those suck)
+* less guess work as to the structure of your store (thank goodness)
 * typed state values, mutation / action payloads, and getters (it's about time)
 * built-in init action for modules (why doesn't this exist by default?)
 * simplify components even further by getting rid of mapState, mapActions, mapMutations, and mapGetters (optional)
 * dispatch actions, get state, etc from anywhere in your code via a single-line command (easy-peasy like)
 
-## Installation
+
+At its simplest, mmm-typed-vuex proposes something like this (yay!):
+```typescript
+computed: {
+  count(): number { return AppStoreHelper.CounterStore.count; },
+},
+methods: {
+  increment(): void { AppStoreHelper.CounterStore.commitIncrement(2); },
+}
+```
+
+Instead of this (boo!):
+```typescript
+computed: {
+  ...mapState({
+    count(state) { return state.CounterStore.count; }
+  }),
+},
+methods: {
+  ...mapMutations('CounterStore', {
+    incrementMutation(commit): void { commit('increment', 3); }
+  }),
+}
+```
+
+### Installation
 
 ```bash
 $ yarn add mmm-typed-vuex
@@ -85,8 +112,8 @@ Much better! It may appear a little verbose, but it's all typed and your editor'
 
 ### Okay, but what is mmm-typed-vuex really?
 
-Honestly, it's not much...which was my main objective. We're talking about roughly 10-20 lines of real code...but there is a dash of magic in there.
-It's just enough to avoid dealing with module paths, make a module's helper methods more accessible, and provide an init action.
+Honestly, it's not much...which was my main objective. We're talking about roughly 20 or so lines of meaningful code...but there is a dash of magic in there.
+It's just enough to avoid dealing with module paths, make a module's helper methods more accessible, and provide an init module action.
 
 And now, for the measly sum of __$0__, all that magic can be yours ;)
 
@@ -99,16 +126,12 @@ The following is just one example. Chances are, you'll find a better way to leve
 ```typescript
 // CounterStore.module.ts
 export default class CounterStore extends StoreModule {
-  // state property typings
-  public state: CounterStore;
-  public get count(): number { return this.state.count; }
-  public set count(value: number) { value = value; }
-
-  // mutations commits, actions dispatches, and getter accessors
-  public getCountX10(): number { return this.get('getCountX10'); }
-  public commitDecrement(payload: number) { return this.commit('commitDecrement', payload); }
-  public commitIncrement(payload: number) { return this.commit('commitIncrement', payload); }
-  public dispatchDecrement(payload: number) { return this.dispatch('dispatchDecrement', payload); }
+  // typings (the decorators approach is experimental and several other options can be found in the examples directory)
+  @mmmState public count: number;
+  @mmmMutation() public commitDecrement(payload: number) { return; }
+  @mmmMutation() public commitIncrement(payload: number) { return; }
+  @mmmAction() public dispatchDecrement(payload: number) { return; }
+  @mmmGetter() public getCountX10(): number { return NaN; }
 
   constructor() {
     super();
