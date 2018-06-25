@@ -134,6 +134,9 @@ export default class CounterStore extends StoreModule {
           },
         },
         actions: {
+          initModule: (context: ActionContext<AppStore, AppStore>) => {
+            // finally, an easy way to asynchronously initialize state on module load, add 'this._store.watch', etc
+          },
           dispatchDecrement: (context: ActionContext<CounterStore, AppStore>, payload: number) => {
             this.commitDecrement(payload);
             // dispatch to another module, in this case the root AppStore (wow is this easy!!!)
@@ -178,6 +181,10 @@ Plus, having the ability to leverage the init action is amazing!
 This is surely not the best way this can be done, but it's at least a step in the right direction, I feel.
 
 If you have ideas on how to improve upon this effort or want to contribute in any way, I'd definitely enjoy hearing from you! Two people's ideas are better than one.
+
+### Version 5 Notes
+* The init action 'initMmm' has been renamed 'initModule'
+* The store is now available from any modules via 'this._store'
 
 ### Version 4 Notes
 * Store modules are now set to the 'options' property and the root store and its modules must pass this property in during registration
