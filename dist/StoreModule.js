@@ -62,6 +62,15 @@ var StoreModule = /** @class */ (function () {
     return StoreModule;
 }());
 exports.StoreModule = StoreModule;
+function mmmRootSingletonGetter() {
+    return function (target, propertyKey, descriptor) {
+        descriptor.value = function () {
+            return target._instance || (target._instance = new target());
+        };
+        return descriptor;
+    };
+}
+exports.mmmRootSingletonGetter = mmmRootSingletonGetter;
 function mmmState(target, propertyKey) {
     Object.defineProperty(target, propertyKey, {
         get: function () { return this.state[propertyKey]; },
@@ -94,12 +103,21 @@ function mmmAction() {
     };
 }
 exports.mmmAction = mmmAction;
-function mmmGetter() {
+function mmmGetter(options) {
     return function (target, propertyKey, descriptor) {
         descriptor.value = function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
+            }
+            if (options && options.optionalMethodStyleDefaults) {
+                if (args.length === 0) {
+                    args = options.optionalMethodStyleDefaults;
+                }
+                else if (args.length < options.optionalMethodStyleDefaults.length) {
+                    var additionalDefaultArgs = options.optionalMethodStyleDefaults.slice(args.length, options.optionalMethodStyleDefaults.length);
+                    args = args.concat(additionalDefaultArgs);
+                }
             }
             return this.get.apply(this, [propertyKey].concat(args));
         };

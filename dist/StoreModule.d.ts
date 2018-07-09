@@ -11,7 +11,10 @@ export declare class StoreModule {
     protected _setupInits(options: any): void;
     protected _recursivelyFindModulesAndDispatchInit(module: any): void;
 }
+export declare function mmmRootSingletonGetter(): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any;
 export declare function mmmState(target: object, propertyKey: string | symbol): void;
 export declare function mmmMutation(): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any;
 export declare function mmmAction(): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any;
-export declare function mmmGetter(): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any;
+export declare function mmmGetter(options?: {
+    optionalMethodStyleDefaults: any[];
+}): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any;

@@ -79,6 +79,15 @@ export class StoreModule {
   }
 }
 
+export function mmmRootSingletonGetter() {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor): any => {
+    descriptor.value = function() {
+      return target._instance || (target._instance = new target())
+    };
+    return descriptor;
+  };
+}
+
 export function mmmState(target: object, propertyKey: string | symbol) {
   Object.defineProperty(target, propertyKey, {
     get() { return this.state[propertyKey]; },
@@ -103,9 +112,19 @@ export function mmmAction() {
   };
 }
 
-export function mmmGetter() {
+export function mmmGetter(options?: {optionalMethodStyleDefaults: any[]}) {
   return (target, propertyKey: string, descriptor: PropertyDescriptor): any => {
     descriptor.value = function(...args) {
+      if(options && options.optionalMethodStyleDefaults) {
+        if(args.length === 0) {
+          args = options.optionalMethodStyleDefaults;
+        }
+        else if(args.length < options.optionalMethodStyleDefaults.length) {
+          const additionalDefaultArgs: any[] = options.optionalMethodStyleDefaults.slice(args.length, options.optionalMethodStyleDefaults.length);
+          args = args.concat(additionalDefaultArgs);
+        }
+      }
+
       return this.get(propertyKey, ...args);
     };
     return descriptor;

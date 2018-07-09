@@ -1,5 +1,6 @@
 export {
   StoreModule,
+  mmmRootSingletonGetter,
   mmmAction,
   mmmMutation,
   mmmGetter,
