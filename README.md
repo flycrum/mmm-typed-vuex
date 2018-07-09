@@ -1,6 +1,16 @@
 # mmm-typed-vuex (beta 5)
 Vuex and TypeScript living in harmony with one another 🎶
 
+### Installation
+
+```bash
+$ yarn add mmm-typed-vuex
+```
+
+```bash
+$ npm install --save mmm-typed-vuex
+```
+
 ### Okay, but what is mmm-typed-vuex?
 
 This library is all about:
@@ -12,7 +22,7 @@ This library is all about:
 * dispatch actions, get state, etc from anywhere in your code via a single-line command (easy-peasy like)
 
 
-At its simplest, mmm-typed-vuex proposes something like this (yay!):
+At its simplest, mmm-typed-vuex proposes something like this (yay typings!):
 ```typescript
 computed: {
   count(): number { return AppStoreHelper.CounterStore.count; },
@@ -34,16 +44,6 @@ methods: {
     incrementMutation(commit): void { commit('increment', 3); }
   }),
 }
-```
-
-### Installation
-
-```bash
-$ yarn add mmm-typed-vuex
-```
-
-```bash
-$ npm install --save mmm-typed-vuex
 ```
 
 ### Why?
@@ -116,6 +116,10 @@ Honestly, it's not much...which was my main objective. We're talking about rough
 It's just enough to avoid dealing with module paths, make a module's helper methods more accessible, and provide an init module action.
 
 And now, for the measly sum of __$0__, all that magic can be yours ;)
+
+### Additional documentation
+
+* [Using decorators and their options (like getters with optional defaults)](README_decorators.md)
 
 ### Vuex definition examples:
 
